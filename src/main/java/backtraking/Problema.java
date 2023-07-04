@@ -1,4 +1,4 @@
-package progetto.backtraking;
+package backtraking;
 
 public abstract class Problema<P, S> {
 	protected abstract P primoPuntoDiScelta();

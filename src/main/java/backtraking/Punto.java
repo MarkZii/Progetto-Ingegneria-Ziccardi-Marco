@@ -1,6 +1,6 @@
-package progetto.backtraking;
+package backtraking;
 
-import progetto.visitor.DocumentVisitor;
+import visitor.DocumentVisitor;
 
 public final class Punto {
     private int riga;

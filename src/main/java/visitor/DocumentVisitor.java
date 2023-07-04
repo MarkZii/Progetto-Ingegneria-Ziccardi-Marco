@@ -1,8 +1,8 @@
-package progetto.visitor;
+package visitor;
 
-import progetto.backtraking.Griglia;
-import progetto.backtraking.Gruppo;
-import progetto.backtraking.Punto;
+import backtraking.Griglia;
+import backtraking.Gruppo;
+import backtraking.Punto;
 
 public interface DocumentVisitor {
     void visit(Griglia griglia);

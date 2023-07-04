@@ -1,6 +1,6 @@
-package progetto.director;
+package director;
 
-import progetto.builder.GrigliaBuilderIF;
+import builder.GrigliaBuilderIF;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

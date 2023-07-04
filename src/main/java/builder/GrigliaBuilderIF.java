@@ -1,4 +1,4 @@
-package progetto.builder;
+package builder;
 
 public interface GrigliaBuilderIF {
 

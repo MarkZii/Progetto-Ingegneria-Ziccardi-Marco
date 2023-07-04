@@ -1,11 +1,10 @@
-package progetto.visitor;
+package visitor;
 
 
-import progetto.backtraking.Griglia;
-import progetto.backtraking.Gruppo;
-import progetto.backtraking.Punto;
+import backtraking.Griglia;
+import backtraking.Gruppo;
+import backtraking.Punto;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
@@ -19,7 +18,7 @@ public class TextVisitor implements DocumentVisitor{
     @Override
     public void visit(Griglia griglia) {
         pw.println("<griglia>");
-        pw.println("<dimensione>\n"+griglia.getSize()+"\n</dimensione");
+        pw.println("<dimensione>\n"+griglia.getSize()+"\n</dimensione>");
         for(Gruppo g: griglia.getGruppi()){
             g.accept(this);
         }

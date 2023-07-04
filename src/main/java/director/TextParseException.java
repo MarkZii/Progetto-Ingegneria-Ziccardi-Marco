@@ -1,5 +1,5 @@
 
-package progetto.director;
+package director;
 
 import java.io.Serial;
 

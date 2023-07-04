@@ -1,12 +1,8 @@
-package progetto.builder;
+package builder;
 
-import progetto.backtraking.Griglia;
-import progetto.backtraking.Gruppo;
-import progetto.backtraking.Punto;
-import progetto.visitor.DocumentVisitor;
+import backtraking.Gruppo;
+import backtraking.Punto;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 

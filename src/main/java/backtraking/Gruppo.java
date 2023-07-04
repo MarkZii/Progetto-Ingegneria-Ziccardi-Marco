@@ -1,6 +1,6 @@
-package progetto.backtraking;
+package backtraking;
 
-import progetto.visitor.TextVisitor;
+import visitor.TextVisitor;
 
 import java.util.LinkedList;
 
@@ -9,7 +9,11 @@ public final class Gruppo {
     private int value;
     private String operazione;
 
-    public Gruppo() {}
+    public Gruppo() {
+        value=0;
+        operazione=" ";
+        punti= new LinkedList<>();
+    }
     public Gruppo(int v, String o, LinkedList<Punto> p){
         value=v;
         operazione=o;

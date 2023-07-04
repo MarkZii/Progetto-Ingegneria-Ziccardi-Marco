@@ -1,4 +1,4 @@
-package progetto.backtraking;
+package backtraking;
 
 public class GrigliaMemento {
     int[][] griglia;

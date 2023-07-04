@@ -1,9 +1,9 @@
-package progetto.backtraking;
+package backtraking;
 
-import progetto.builder.GrigliaBuilder;
-import progetto.director.DocumentParser;
-import progetto.director.TextParseException;
-import progetto.visitor.DocumentVisitor;
+import builder.GrigliaBuilder;
+import director.DocumentParser;
+import director.TextParseException;
+import visitor.DocumentVisitor;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -14,13 +14,25 @@ public class Griglia extends Problema<Punto, Integer> {
     private Punto puntoS;
     private Punto puntoF;
     private LinkedList<Gruppo> gruppi = new LinkedList<>();
+    public Griglia(int size, LinkedList<Gruppo> gruppi){
+        super(1);
+        this.size=size;
+        this.gruppi = new LinkedList<>(gruppi);
+        puntoS = new Punto(0,0);
+        puntoF = new Punto((size-1),(size-1));
+        griglia = new int[size][size];
+
+        for(int i=0; i<size; i++)
+            for(int j=0; j<size; j++)
+                griglia[i][j] = 0;
+    }
     public Griglia(int size, int numSol){
         super(numSol);
-        /*try {
+        try {
             leggiDaFile();
         }catch (Exception e){
             e.printStackTrace();
-        }*/
+        }
 
         this.size=size;
         puntoS = new Punto(0,0);
@@ -30,7 +42,7 @@ public class Griglia extends Problema<Punto, Integer> {
         for(int i=0; i<size; i++)
             for(int j=0; j<size; j++)
                 griglia[i][j] = 0;
-
+/*
         Punto p1 = new Punto(0,0);
         Punto p2 = new Punto(0,1);
         LinkedList<Punto> l = new LinkedList<>();
@@ -96,7 +108,7 @@ public class Griglia extends Problema<Punto, Integer> {
         gruppi.add(g7);
         gruppi.add(g8);
 
-
+*/
         scriviSoluzione(0);
     }
 
@@ -111,6 +123,9 @@ public class Griglia extends Problema<Punto, Integer> {
 
         size = builder.getSize();
         gruppi = new LinkedList<>(builder.getGruppi());
+
+        System.out.println(gruppi);
+
     }
 
     @Override

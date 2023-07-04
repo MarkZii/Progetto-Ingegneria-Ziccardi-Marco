@@ -1,16 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="progetto.progettokenkne.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<VBox fx:id="contenuto" alignment="TOP_CENTER" prefHeight="700.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progetto.progettokenkne.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <Label alignment="TOP_CENTER" prefHeight="0.0" prefWidth="290.0" text="Benvenuto." textAlignment="CENTER" textOverrun="CLIP">
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <HBox fx:id="hBox" alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="550.0">
+      <children>
+         <Label prefHeight="17.0" prefWidth="209.0" text="Inserisci dimensione Griglia:">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+         </Label>
+         <TextField fx:id="dimensione" prefHeight="25.0" prefWidth="150.0" promptText="(valori compresi tra 3 e 9)" />
+         <Label fx:id="textError" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="334.0" textAlignment="CENTER" textFill="RED" textOverrun="CLIP">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+         </Label>
+      </children>
+   </HBox>
+    <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="Carica griglia" />
+   <Label fx:id="istruzione" text="Specifica la configurazione di gioco" />
+   <HBox fx:id="boxGriglia" prefHeight="451.0" prefWidth="760.0">
+      <children>
+         <VBox fx:id="scecificheGruppo" prefHeight="359.0" prefWidth="208.0">
+            <children>
+               <TextField fx:id="sceltaVal" prefHeight="26.0" prefWidth="123.0" promptText="(Inserisci valore)" />
+               <Separator orientation="VERTICAL" prefHeight="20.0" prefWidth="70.0" visible="false" />
+               <MenuButton fx:id="sceltaOp" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" text="Scegli operazione" wrapText="true">
+                 <items>
+                   <MenuItem fx:id="somma" mnemonicParsing="false" onAction="#sceltaSomma" text="somma" />
+                   <MenuItem fx:id="meno" mnemonicParsing="false" onAction="#sceltaMeno" text="sottrazione" />
+                     <MenuItem fx:id="prodotto" mnemonicParsing="false" onAction="#sceltaMoltiplicazione" text="moltiplicazione" />
+                     <MenuItem fx:id="divisione" mnemonicParsing="false" onAction="#sceltaDivisione" text="divisione" />
+                 </items>
+               </MenuButton>
+               <Separator orientation="VERTICAL" prefHeight="20.0" prefWidth="70.0" visible="false" />
+               <Label fx:id="celleScelte" alignment="TOP_LEFT" prefHeight="224.0" prefWidth="137.0" />
+               <Label fx:id="erroreSalva" prefHeight="18.0" prefWidth="207.0" textFill="RED" />
+               <HBox fx:id="hBox1" alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="550.0">
+                  <children>
+                     <Button fx:id="cancella" mnemonicParsing="false" onAction="#cancellaOperazione" prefHeight="30.0" prefWidth="70.0" text="cancella" />
+                     <Separator prefHeight="10.0" prefWidth="49.0" visible="false" />
+                     <Button fx:id="resettaTutto" mnemonicParsing="false" onAction="#resettaTutto" text="resetta tutto" />
+                  </children>
+               </HBox>
+               <Button fx:id="salvaGruppo" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#salvaGruppo" prefHeight="35.0" prefWidth="116.0" text="salva Gruppo" />
+            </children>
+         </VBox>
+         <Separator prefHeight="5.0" prefWidth="67.0" visible="false" />
+         <GridPane fx:id="griglia" gridLinesVisible="true" prefHeight="400.0" prefWidth="450.0">
+           
+         </GridPane>
+      </children>
+   </HBox>
+   <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" text="CONFERMA STRUTTURA" />
 </VBox>

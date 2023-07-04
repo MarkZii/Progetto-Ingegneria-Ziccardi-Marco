@@ -1,4 +1,4 @@
-package progetto.backtraking;
+package backtraking;
 
 public interface ProblemaIF<P, S> {
 	P primoPuntoDiScelta();
