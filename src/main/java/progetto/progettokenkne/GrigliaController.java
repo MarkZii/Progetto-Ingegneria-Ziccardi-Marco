@@ -6,18 +6,28 @@ import backtraking.Punto;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import visitor.DocumentVisitor;
+import visitor.TextVisitor;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Random;
 
 public class GrigliaController {
     public int size=0;
-    @FXML private TextField dimensione, sceltaVal;
-    @FXML private HBox hBox;
-    @FXML private Button confermaStruttura;
+    @FXML private TextField dimensione, sceltaVal, caricaFile;
+    @FXML private HBox inizializzazione;
+    @FXML private Button confermaStruttura, esporta;
     @FXML private GridPane griglia;
     @FXML private Label istruzione, celleScelte, textError, erroreSalva;
     @FXML private VBox scecificheGruppo;
@@ -29,14 +39,12 @@ public class GrigliaController {
     private LinkedList<Buttonc> button = new LinkedList<>();
     private LinkedList<Buttonc> tuttiButton = new LinkedList<>();
     private int contButton = 0;
+    private boolean daFile = false;
     private LinkedList<TextFieldC> textFields = new LinkedList<>();
 
     private LinkedList<String> colori = new LinkedList<>();
-    public void initialize() {
-        confermaStruttura.setVisible(false);
-        istruzione.setVisible(false);
-        scecificheGruppo.setVisible(false);
-    }
+    private Griglia sc;
+    public void initialize() {}
     @FXML
     protected void grigliaButtonClick() throws IOException {
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("griglia-window.fxml"));
@@ -54,18 +62,19 @@ public class GrigliaController {
                 stage.setScene(scene);
                 stage.show();*/
                 istruzione.setVisible(true);
-                hBox.setVisible(false);
+                inizializzazione.setVisible(false);
                 scecificheGruppo.setVisible(true);
                 creazioneGrid();
+                //caricamento delle righe e colonne nella griglia
+                for (int j = 0; j < size; j++) {
+                    griglia.addColumn(j);
+                    griglia.addRow(j);
+                }
             }
         }
     }
     private void creazioneGrid(){
-        //caricamento delle righe e colonne nella griglia
-        for (int j = 0; j < size; j++) {
-            griglia.addColumn(j);
-            griglia.addRow(j);
-        }
+
 
         //gestore dei click dei pulsanti
         EventHandler<ActionEvent> buttonClickHandler = event -> {
@@ -101,14 +110,15 @@ public class GrigliaController {
             erroreSalva.setText("ERRORE, ricontrolla");
         }else {
             tuttiButton.addAll(button);
-            erroreSalva.setText("");
+            System.out.println(tuttiButton.size());
             gruppi.add(gruppo);
             gruppo = new Gruppo();
             punti = new LinkedList<>();
+            button = new LinkedList<>();
+            erroreSalva.setText("");
             celleScelte.setText("");
             sceltaVal.setText("");
             sceltaOp.setText("scelta operazione");
-            button = new LinkedList<>();
             if(tuttiButton.size() == (size*size)) confermaStruttura.setVisible(true);
         }
     }
@@ -117,79 +127,100 @@ public class GrigliaController {
     private void cancellaOperazione(){
         for(Buttonc b: button) {
             b.setDisable(false);
-            tuttiButton.remove(b);
         }
-        erroreSalva.setText("");
         gruppo = new Gruppo();
         punti = new LinkedList<>();
+        button = new LinkedList<>();
         System.out.println(gruppi);
         System.out.println(punti);
+        erroreSalva.setText("");
         celleScelte.setText("");
         sceltaVal.setText("");
         sceltaOp.setText("scelta operazione");
+        System.out.println(tuttiButton.size());
     }
     @FXML
     private void resettaTutto(){
         confermaStruttura.setVisible(false);
-        tuttiButton.addAll(button);
         for(Buttonc b: tuttiButton) {
             b.setDisable(false);
-            tuttiButton.remove(b);
         }
-        erroreSalva.setText("");
+        tuttiButton = new LinkedList<>();
         gruppo = new Gruppo();
         punti = new LinkedList<>();
         gruppi = new LinkedList<>();
         System.out.println(gruppi);
         System.out.println(punti);
+        erroreSalva.setText("");
         celleScelte.setText("");
         sceltaVal.setText("");
         sceltaOp.setText("scelta operazione");
+        System.out.println(tuttiButton.size());
     }
     @FXML
     private void confermaStruttura(){
-
-        System.out.println(gruppi);
+        if(daFile){
+            caricaFile.setVisible(false);
+            caricaDaFile();
+        } else {
+            sc = new Griglia(1, size, gruppi);
+            disegnaStruttura();
+        }
+    }
+    private void disegnaStruttura(){
+        esporta.setDisable(false);
+        gruppi = new LinkedList<>(sc.getGruppi());
         coloriCasuali();
-        griglia.getChildren().clear();
-
         //aggiunta delle textfield nella griglia
-        int i=0;
+        int i = 0;
         boolean ok = true;
-        for(Gruppo g: gruppi) {
+        for (Gruppo g : gruppi) {
             String colore = colori.get(i);
-            for(Punto p: g.getPunti()) {
+            for (Punto p : g.getPunti()) {
+                System.out.println("cjeigvjiefjgvbethnbui");
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
-                text.setStyle("-fx-border-color: #"+colore+";-fx-border-width: 2px; -fx-background-color: #"+colore+";-fx-pref-width: 35px;-fx-pref-height: 35px");
+                text.setStyle("-fx-border-color: #" + colore + ";-fx-border-width: 2px; -fx-background-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 35px");
                 Label label = new Label();
                 VBox root = new VBox();
                 textFields.add(text);
-                if(ok){
-                    switch (g.getOperazione()){
+                if (ok) {
+                    switch (g.getOperazione()) {
                         case "piu":
-                            label.setText(g.getValue()+"+");
+                            label.setText(g.getValue() + "+");
                             break;
                         case "meno":
-                            label.setText(g.getValue()+"-");
+                            label.setText(g.getValue() + "-");
                             break;
                         case "divisione":
-                            label.setText(g.getValue()+"/");
+                            label.setText(g.getValue() + "/");
                             break;
                         case "moltiplicazione":
-                            label.setText(g.getValue()+"x");
+                            label.setText(g.getValue() + "x");
                             break;
                     }
-                    label.setStyle("-fx-text-fill: #"+colore+";");
+                    label.setStyle("-fx-text-fill: #" + colore + ";");
                 }
+                System.out.println(p.getColonna()+" "+p.getRiga());
                 root.getChildren().addAll(label, text);
-                griglia.add(root,p.getColonna(), p.getRiga());
-                ok=false;
+                griglia.add(root, p.getColonna(), p.getRiga());
+                ok = false;
             }
-            ok=true;
+            ok = true;
             i++;
         }
         istruzione.setText("La griglia è pronta, gioca");
         scecificheGruppo.setVisible(false);
+        confermaStruttura.setVisible(false);
+        esporta.setDisable(false);
+    }
+    private void caricaDaFile() {
+        try {
+            String nomeFile = caricaFile.getText();
+            sc = new Griglia(1, nomeFile);
+            size = sc.getSize();
+            disegnaStruttura();
+
+        }catch (Exception e){}
 
     }
 
@@ -236,8 +267,7 @@ public class GrigliaController {
             colori.add(hexNumero);
         }
     }
-    public void mostraSoluzione(){
-        Griglia sc = new Griglia(size,gruppi);
+    public void mostraSoluzione() {
         sc.risolvi();
         int[][] soluzione = sc.risultato();
         System.out.println(soluzione);
@@ -248,7 +278,25 @@ public class GrigliaController {
             i++;
         }
     }
+
+    public void esportaGriglia(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("esporta-griglia.fxml"));
+        Parent root = loader.load();
+        EsportaController ec = loader.getController();
+        ec.inizializzazione(sc);
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
     public void verificaSoluzione(){
+
+    }
+    public void caricaGriglia() throws IOException {
+        inizializzazione.setVisible(false);
+        caricaFile.setVisible(true);
+        confermaStruttura.setVisible(true);
+        daFile = true;
 
     }
 }

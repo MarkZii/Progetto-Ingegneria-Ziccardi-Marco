@@ -14,26 +14,21 @@ public class Griglia extends Problema<Punto, Integer> {
     private Punto puntoS;
     private Punto puntoF;
     private LinkedList<Gruppo> gruppi = new LinkedList<>();
-    public Griglia(int size, LinkedList<Gruppo> gruppi){
-        super(1);
-        this.size=size;
-        this.gruppi = new LinkedList<>(gruppi);
+
+    public Griglia(int numSol, int size, LinkedList<Gruppo> gruppi) {
+        super(numSol);
+        this.size = size;
+        gruppi = new LinkedList<>(gruppi);
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
         griglia = new int[size][size];
-
         for(int i=0; i<size; i++)
             for(int j=0; j<size; j++)
                 griglia[i][j] = 0;
     }
+
     public Griglia(int size, int numSol){
         super(numSol);
-        try {
-            leggiDaFile();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         this.size=size;
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
@@ -112,20 +107,20 @@ public class Griglia extends Problema<Punto, Integer> {
         scriviSoluzione(0);
     }
 
-    private void leggiDaFile() throws TextParseException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Inserisci il percorso del file:  ");
-        String text = scanner.nextLine();
-
+    public Griglia(int numSol, String file) throws TextParseException {
+        super(numSol);
         GrigliaBuilder builder = new GrigliaBuilder();
-        DocumentParser tp = new DocumentParser(builder, text);
+        DocumentParser tp = new DocumentParser(builder, file);
         tp.build();
-
         size = builder.getSize();
         gruppi = new LinkedList<>(builder.getGruppi());
+        puntoS = new Punto(0,0);
+        puntoF = new Punto((size-1),(size-1));
+        griglia = new int[size][size];
 
-        System.out.println(gruppi);
-
+        for(int i=0; i<size; i++)
+            for(int j=0; j<size; j++)
+                griglia[i][j] = 0;
     }
 
     @Override

@@ -10,10 +10,10 @@ import java.util.LinkedList;
 
 public class TextVisitor implements DocumentVisitor{
     private PrintWriter pw;
-    private int size;
-    private LinkedList<Gruppo> gruppi = new LinkedList<>();
+    //private int size;
+    //private LinkedList<Gruppo> gruppi = new LinkedList<>();
     public TextVisitor(PrintWriter ps) {
-        pw = new PrintWriter(ps);
+        this.pw=ps;
     }
     @Override
     public void visit(Griglia griglia) {

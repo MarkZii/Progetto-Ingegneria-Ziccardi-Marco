@@ -14,10 +14,10 @@
 		</punto>
 		<punto>
 			<riga>
-				1
+				0
 			</riga>
 			<colonna>
-				0
+				1
 			</colonna>
 		</punto>
 		<punto>

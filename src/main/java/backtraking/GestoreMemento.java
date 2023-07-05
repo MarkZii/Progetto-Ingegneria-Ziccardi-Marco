@@ -10,5 +10,4 @@ public class GestoreMemento {
         griglia=g;
     }
 
-    public
-}
+    }

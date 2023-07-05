@@ -24,7 +24,7 @@
          <Font size="14.0" />
       </font>
    </Label>
-   <HBox fx:id="hBox" alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="550.0">
+   <HBox fx:id="inizializzazione" alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="550.0">
       <children>
          <Label prefHeight="17.0" prefWidth="209.0" text="Inserisci dimensione Griglia:">
             <opaqueInsets>
@@ -42,9 +42,9 @@
    </HBox>
    <HBox prefHeight="100.0" prefWidth="200.0">
       <children>
-         <Button mnemonicParsing="false" text="Carica griglia" />
+         <Button mnemonicParsing="false" onAction="#caricaGriglia" text="Carica griglia" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-         <Button mnemonicParsing="false" text="Esporta griglia" />
+         <Button fx:id="esporta" disable="true" mnemonicParsing="false" onAction="#esportaGriglia" text="Esporta griglia" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
          <Button mnemonicParsing="false" onAction="#mostraSoluzione" text="Mostra soluzione" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
@@ -53,10 +53,15 @@
          <Button mnemonicParsing="false" text="Precedente" />
       </children>
    </HBox>
-   <Label fx:id="istruzione" text="Specifica la configurazione di gioco" />
+   <HBox prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <TextField fx:id="caricaFile" prefHeight="26.0" prefWidth="205.0" promptText="(Inserisci percorso file)" visible="false" />
+      </children>
+   </HBox>
+   <Label fx:id="istruzione" text="Specifica la configurazione di gioco" visible="false" />
    <HBox fx:id="boxGriglia" prefHeight="451.0" prefWidth="760.0">
       <children>
-         <VBox fx:id="scecificheGruppo" alignment="CENTER" prefHeight="439.0" prefWidth="176.0">
+         <VBox fx:id="scecificheGruppo" alignment="CENTER" prefHeight="439.0" prefWidth="176.0" visible="false">
             <children>
                <TextField fx:id="sceltaVal" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="142.0" promptText="valori maggiore di zero" />
                <Separator orientation="VERTICAL" prefHeight="20.0" prefWidth="70.0" visible="false" />
@@ -94,7 +99,7 @@
    </HBox>
    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
       <children>
-         <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="40.0" prefWidth="162.0" text="CONFERMA STRUTTURA" />
+         <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="40.0" prefWidth="162.0" text="CARICA STRUTTURA" visible="false" />
          <Separator prefHeight="21.0" prefWidth="60.0" visible="false" />
          <Button mnemonicParsing="false" onAction="#verificaSoluzione" prefHeight="40.0" prefWidth="120.0" text="Verifica soluzione" />
       </children>
