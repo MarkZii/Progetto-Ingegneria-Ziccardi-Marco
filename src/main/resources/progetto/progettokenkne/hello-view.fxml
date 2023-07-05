@@ -16,7 +16,7 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <Label alignment="TOP_CENTER" prefHeight="0.0" prefWidth="290.0" text="Benvenuto." textAlignment="CENTER" textOverrun="CLIP">
+   <Label alignment="TOP_CENTER" prefHeight="0.0" prefWidth="290.0" text="Benvenuto" textAlignment="CENTER" textOverrun="CLIP">
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
@@ -39,13 +39,13 @@
          </Label>
       </children>
    </HBox>
-    <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="Carica griglia" />
+    <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="carica griglia" />
    <Label fx:id="istruzione" text="Specifica la configurazione di gioco" />
    <HBox fx:id="boxGriglia" prefHeight="451.0" prefWidth="760.0">
       <children>
-         <VBox fx:id="scecificheGruppo" prefHeight="359.0" prefWidth="208.0">
+         <VBox fx:id="scecificheGruppo" alignment="CENTER" prefHeight="439.0" prefWidth="176.0">
             <children>
-               <TextField fx:id="sceltaVal" prefHeight="26.0" prefWidth="123.0" promptText="(Inserisci valore)" />
+               <TextField fx:id="sceltaVal" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="142.0" promptText="valori maggiore di zero" />
                <Separator orientation="VERTICAL" prefHeight="20.0" prefWidth="70.0" visible="false" />
                <MenuButton fx:id="sceltaOp" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" text="Scegli operazione" wrapText="true">
                  <items>
@@ -58,21 +58,24 @@
                <Separator orientation="VERTICAL" prefHeight="20.0" prefWidth="70.0" visible="false" />
                <Label fx:id="celleScelte" alignment="TOP_LEFT" prefHeight="224.0" prefWidth="137.0" />
                <Label fx:id="erroreSalva" prefHeight="18.0" prefWidth="207.0" textFill="RED" />
-               <HBox fx:id="hBox1" alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="550.0">
+               <HBox fx:id="hBox1" alignment="CENTER" prefHeight="34.0" prefWidth="550.0">
                   <children>
                      <Button fx:id="cancella" mnemonicParsing="false" onAction="#cancellaOperazione" prefHeight="30.0" prefWidth="70.0" text="cancella" />
-                     <Separator prefHeight="10.0" prefWidth="49.0" visible="false" />
-                     <Button fx:id="resettaTutto" mnemonicParsing="false" onAction="#resettaTutto" text="resetta tutto" />
+                     <Separator prefHeight="21.0" prefWidth="5.0" visible="false" />
+                     <Button fx:id="resettaTutto" mnemonicParsing="false" onAction="#resettaTutto" prefHeight="30.0" prefWidth="90.0" text="resetta tutto" />
                   </children>
                </HBox>
-               <Button fx:id="salvaGruppo" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#salvaGruppo" prefHeight="35.0" prefWidth="116.0" text="salva Gruppo" />
+               <Button fx:id="salvaGruppo" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#salvaGruppo" prefHeight="35.0" prefWidth="116.0" text="salva gruppo" />
             </children>
          </VBox>
-         <Separator prefHeight="5.0" prefWidth="67.0" visible="false" />
-         <GridPane fx:id="griglia" gridLinesVisible="true" prefHeight="400.0" prefWidth="450.0">
-           
-         </GridPane>
+         <GridPane fx:id="griglia" prefHeight="400.0" prefWidth="450.0">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding></GridPane>
       </children>
    </HBox>
-   <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" text="CONFERMA STRUTTURA" />
+   <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="45.0" prefWidth="162.0" text="CONFERMA STRUTTURA" />
 </VBox>
