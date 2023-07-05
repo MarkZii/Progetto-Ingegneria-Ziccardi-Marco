@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="contenuto" alignment="TOP_CENTER" prefHeight="700.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progetto.progettokenkne.HelloController">
+<VBox fx:id="contenuto" alignment="TOP_CENTER" prefHeight="700.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progetto.progettokenkne.GrigliaController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -32,14 +32,27 @@
             </opaqueInsets>
          </Label>
          <TextField fx:id="dimensione" prefHeight="25.0" prefWidth="150.0" promptText="(valori compresi tra 3 e 9)" />
-         <Label fx:id="textError" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="334.0" textAlignment="CENTER" textFill="RED" textOverrun="CLIP">
+         <Label fx:id="textError" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="230.0" textAlignment="CENTER" textFill="RED" textOverrun="CLIP">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
          </Label>
+          <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="carica griglia" />
       </children>
    </HBox>
-    <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="carica griglia" />
+   <HBox prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <Button mnemonicParsing="false" text="Carica griglia" />
+         <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
+         <Button mnemonicParsing="false" text="Esporta griglia" />
+         <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
+         <Button mnemonicParsing="false" onAction="#mostraSoluzione" text="Mostra soluzione" />
+         <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
+         <Button mnemonicParsing="false" text="Prossima" />
+         <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
+         <Button mnemonicParsing="false" text="Precedente" />
+      </children>
+   </HBox>
    <Label fx:id="istruzione" text="Specifica la configurazione di gioco" />
    <HBox fx:id="boxGriglia" prefHeight="451.0" prefWidth="760.0">
       <children>
@@ -68,14 +81,22 @@
                <Button fx:id="salvaGruppo" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#salvaGruppo" prefHeight="35.0" prefWidth="116.0" text="salva gruppo" />
             </children>
          </VBox>
+         <Separator prefHeight="21.0" prefWidth="60.0" visible="false" />
          <GridPane fx:id="griglia" prefHeight="400.0" prefWidth="450.0">
             <HBox.margin>
                <Insets />
             </HBox.margin>
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding></GridPane>
+            </padding>
+         </GridPane>
       </children>
    </HBox>
-   <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="45.0" prefWidth="162.0" text="CONFERMA STRUTTURA" />
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="40.0" prefWidth="162.0" text="CONFERMA STRUTTURA" />
+         <Separator prefHeight="21.0" prefWidth="60.0" visible="false" />
+         <Button mnemonicParsing="false" onAction="#verificaSoluzione" prefHeight="40.0" prefWidth="120.0" text="Verifica soluzione" />
+      </children>
+   </HBox>
 </VBox>

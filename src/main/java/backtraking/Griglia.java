@@ -299,15 +299,18 @@ public class Griglia extends Problema<Punto, Integer> {
     }
 
     //per implementare il memento sarà scrivi soluzione a introdurre un comando così che il command lo salva.
-    public GrigliaMemento save(){
-        return new GrigliaMemento(griglia);
+    public Memento save(){
+        return new Memento(griglia);
     }
-    public void restore(GrigliaMemento memento){
+    public void restore(Memento memento){
         for(int i=0; i< griglia.length; i++){
             for(int j=0; i< griglia.length; i++){
                 this.griglia[i][j] = griglia[i][j];
             }
         }
+    }
+    public int[][] risultato(){
+        return griglia;
     }
 
     public void accept(DocumentVisitor visitor){

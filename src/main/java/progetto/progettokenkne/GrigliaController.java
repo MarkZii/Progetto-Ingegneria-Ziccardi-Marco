@@ -6,20 +6,18 @@ import backtraking.Punto;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
-import javafx.util.converter.IntegerStringConverter;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class HelloController {
+public class GrigliaController {
     public int size=0;
     @FXML private TextField dimensione, sceltaVal;
-    @FXML private HBox hBox,hBox1;
-    @FXML private Button carica, salvaGruppo, cancella, confermaStruttura;
+    @FXML private HBox hBox;
+    @FXML private Button confermaStruttura;
     @FXML private GridPane griglia;
     @FXML private Label istruzione, celleScelte, textError, erroreSalva;
     @FXML private VBox scecificheGruppo;
@@ -30,9 +28,12 @@ public class HelloController {
     private LinkedList<Punto> punti = new LinkedList<>();
     private LinkedList<Buttonc> button = new LinkedList<>();
     private LinkedList<Buttonc> tuttiButton = new LinkedList<>();
+    private int contButton = 0;
+    private LinkedList<TextFieldC> textFields = new LinkedList<>();
+
     private LinkedList<String> colori = new LinkedList<>();
     public void initialize() {
-        confermaStruttura.setVisible(true);
+        confermaStruttura.setVisible(false);
         istruzione.setVisible(false);
         scecificheGruppo.setVisible(false);
     }
@@ -53,8 +54,7 @@ public class HelloController {
                 stage.setScene(scene);
                 stage.show();*/
                 istruzione.setVisible(true);
-                hBox.setDisable(true);
-                carica.setDisable(true);
+                hBox.setVisible(false);
                 scecificheGruppo.setVisible(true);
                 creazioneGrid();
             }
@@ -73,7 +73,6 @@ public class HelloController {
             Punto punto = new Punto(clickedButton.getRiga(),clickedButton.getColonna());
             if(punti.isEmpty() || (!punti.contains(punto) && eAdiacente(punto))){
                 button.add(clickedButton);
-                tuttiButton.add(clickedButton);
                 punti.add(punto);
                 clickedButton.setDisable(true);
                 String testo = celleScelte.getText();
@@ -85,8 +84,7 @@ public class HelloController {
         //aggiunta dei nodi nella griglia
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                Buttonc button = new Buttonc(i,j);
-                button.setText("premi");
+                Buttonc button = new Buttonc("premi",i,j);
                 button.setOnAction(buttonClickHandler);
                 griglia.add(button, i, j);
             }
@@ -102,13 +100,14 @@ public class HelloController {
         if(gruppo.getOperazione().equals(" ") || gruppo.getValue()<=0 || gruppo.getPunti().isEmpty()){
             erroreSalva.setText("ERRORE, ricontrolla");
         }else {
+            tuttiButton.addAll(button);
             erroreSalva.setText("");
             gruppi.add(gruppo);
             gruppo = new Gruppo();
             punti = new LinkedList<>();
             celleScelte.setText("");
             sceltaVal.setText("");
-            sceltaOp.setText("Scelta operazione");
+            sceltaOp.setText("scelta operazione");
             button = new LinkedList<>();
             if(tuttiButton.size() == (size*size)) confermaStruttura.setVisible(true);
         }
@@ -116,77 +115,82 @@ public class HelloController {
     //operazioni per eliminare l'ultima selezione
     @FXML
     private void cancellaOperazione(){
-        for(Buttonc b: button)
+        for(Buttonc b: button) {
             b.setDisable(false);
+            tuttiButton.remove(b);
+        }
         erroreSalva.setText("");
         gruppo = new Gruppo();
         punti = new LinkedList<>();
+        System.out.println(gruppi);
+        System.out.println(punti);
         celleScelte.setText("");
         sceltaVal.setText("");
-        sceltaOp.setText("Scelta operazione");
+        sceltaOp.setText("scelta operazione");
     }
     @FXML
     private void resettaTutto(){
         confermaStruttura.setVisible(false);
-        for(Buttonc b: tuttiButton)
+        tuttiButton.addAll(button);
+        for(Buttonc b: tuttiButton) {
             b.setDisable(false);
+            tuttiButton.remove(b);
+        }
         erroreSalva.setText("");
         gruppo = new Gruppo();
         punti = new LinkedList<>();
         gruppi = new LinkedList<>();
+        System.out.println(gruppi);
+        System.out.println(punti);
         celleScelte.setText("");
         sceltaVal.setText("");
-        sceltaOp.setText("Scelta operazione");
+        sceltaOp.setText("scelta operazione");
     }
     @FXML
     private void confermaStruttura(){
+
         System.out.println(gruppi);
-        Griglia sc = new Griglia(size,gruppi);
         coloriCasuali();
         griglia.getChildren().clear();
-        //aggiunta dei nodi nella griglia
+
+        //aggiunta delle textfield nella griglia
         int i=0;
         boolean ok = true;
         for(Gruppo g: gruppi) {
             String colore = colori.get(i);
             for(Punto p: g.getPunti()) {
-                TextField text = new TextField();
+                TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
                 text.setStyle("-fx-border-color: #"+colore+";-fx-border-width: 2px; -fx-background-color: #"+colore+";-fx-pref-width: 35px;-fx-pref-height: 35px");
+                Label label = new Label();
+                VBox root = new VBox();
+                textFields.add(text);
                 if(ok){
-                    Label label = null;
                     switch (g.getOperazione()){
                         case "piu":
-                            label = new Label(g.getValue()+" +");
+                            label.setText(g.getValue()+"+");
                             break;
                         case "meno":
-                            label = new Label(g.getValue()+" -");
+                            label.setText(g.getValue()+"-");
                             break;
                         case "divisione":
-                            label = new Label(g.getValue()+" /");
+                            label.setText(g.getValue()+"/");
                             break;
                         case "moltiplicazione":
-                            label = new Label(g.getValue()+" x");
+                            label.setText(g.getValue()+"x");
                             break;
                     }
-
                     label.setStyle("-fx-text-fill: #"+colore+";");
-                    VBox root = new VBox();
-                    root.getChildren().addAll(label, text);
-                    griglia.add(root,p.getColonna(), p.getRiga());
-                }else{
-                    //griglia.add(text, p.getColonna(), p.getRiga());
-                    Label label = new Label();
-                    VBox root = new VBox();
-                    root.getChildren().addAll(label, text);
-                    griglia.add(root,p.getColonna(), p.getRiga());
                 }
+                root.getChildren().addAll(label, text);
+                griglia.add(root,p.getColonna(), p.getRiga());
                 ok=false;
             }
             ok=true;
             i++;
         }
+        istruzione.setText("La griglia è pronta, gioca");
         scecificheGruppo.setVisible(false);
-        sc.risolvi();
+
     }
 
     //classi per prelevare il valore della operazione
@@ -222,9 +226,8 @@ public class HelloController {
         return false;
     }
 
-    public void coloriCasuali() {
+    private void coloriCasuali() {
         Random random = new Random();
-        // Generazione di un numero intero casuale compreso tra 0 e 16777215 (corrispondente a FFFFFF in esadecimale)
         for (int i = 0; i < gruppi.size(); i++) {
             int numero = random.nextInt(16777216);
             String hexNumero = Integer.toHexString(numero);
@@ -232,5 +235,20 @@ public class HelloController {
                 hexNumero = "0" + hexNumero;
             colori.add(hexNumero);
         }
+    }
+    public void mostraSoluzione(){
+        Griglia sc = new Griglia(size,gruppi);
+        sc.risolvi();
+        int[][] soluzione = sc.risultato();
+        System.out.println(soluzione);
+        int i=0;
+        for(TextFieldC t: textFields){
+            System.out.println("ciao "+soluzione[t.getRiga()][t.getColonna()]);
+            t.setText(String.valueOf(soluzione[t.getRiga()][t.getColonna()]));
+            i++;
+        }
+    }
+    public void verificaSoluzione(){
+
     }
 }

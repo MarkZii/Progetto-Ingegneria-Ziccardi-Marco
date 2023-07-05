@@ -39,8 +39,6 @@ public final class Gruppo {
         this.operazione = operazione;
     }
 
-
-
     public int getValue() {
         return value;
     }

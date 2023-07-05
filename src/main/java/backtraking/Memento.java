@@ -1,9 +1,9 @@
 package backtraking;
 
-public class GrigliaMemento {
+public class Memento {
     int[][] griglia;
 
-    GrigliaMemento(int[][] griglia){
+    Memento(int[][] griglia){
         this.griglia = new int[griglia.length][griglia.length];
         for(int i=0; i< griglia.length; i++){
             for(int j=0; i< griglia.length; i++){
@@ -12,7 +12,7 @@ public class GrigliaMemento {
         }
     }
 
-    GrigliaMemento getGrigiaMemento(){
-        return GrigliaMemento.this;
+    Memento getGrigiaMemento(){
+        return Memento.this;
     }
 }

@@ -34,7 +34,7 @@ public abstract class Problema<P, S> {
 	public Problema() {
 		this(Integer.MAX_VALUE);
 	}
-	/*public final void risolvi() { // template method
+	public final void risolvi() { // template method
 		P ps = primoPuntoDiScelta();
 		S s = primaScelta(ps);
 		System.out.println(ps+"   "+s);
@@ -71,12 +71,10 @@ public abstract class Problema<P, S> {
 				}else {
 					System.out.println("devo fare back");
 					backtrack = true;
-
 				}
 			}// while( !backtrack ... )
 				// backward
-			fine = ps.equals(primoPuntoDiScelta())
-					|| nr_soluzione == num_max_soluzioni;
+			fine = ps.equals(primoPuntoDiScelta()) || nr_soluzione == num_max_soluzioni;
 			System.out.println(nr_soluzione == num_max_soluzioni);
 			System.out.println(backtrack+"   "+fine);
 			System.out.println(ps+"   "+primoPuntoDiScelta());
@@ -92,8 +90,8 @@ public abstract class Problema<P, S> {
 					fine = true;
 			}
 		} while (!fine);
-	}// risolvi*/
-	public final void risolvi() { // template method
+	}// risolvi
+	/*public final void risolvi() { // template method
 		P ps = primoPuntoDiScelta();
 		S s = primaScelta(ps);
 		boolean backtrack = false, fine = false;
@@ -133,6 +131,5 @@ public abstract class Problema<P, S> {
 					fine = true;
 			}
 		} while (!fine);
-	}// risolvi
-
+	}// risolvi*/
 }

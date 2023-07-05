@@ -1,12 +1,14 @@
 package progetto.progettokenkne;
 
-import javafx.scene.control.Button;
+import javafx.application.Application;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-public class Buttonc extends Button {
+public class TextFieldC extends TextField {
     private int riga,colonna;
 
-    public Buttonc(String testo, int x, int y){
-        super(testo);
+    public TextFieldC( int x, int y){
+        super();
         this.riga=y;
         this.colonna=x;
     }
