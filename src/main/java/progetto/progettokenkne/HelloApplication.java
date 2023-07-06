@@ -2,10 +2,8 @@ package progetto.progettokenkne;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class HelloApplication extends Application {
@@ -15,7 +13,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         String css = this.getClass().getResource("/style.css").toExternalForm();
         scene.getStylesheets().add(css);
-        stage.setTitle("Kenken!");
+        stage.setTitle("Kenken game");
         stage.setScene(scene);
         stage.show();
     }

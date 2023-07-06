@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="contenuto" alignment="TOP_CENTER" prefHeight="700.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="progetto.progettokenkne.GrigliaController">
@@ -40,22 +41,23 @@
           <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="35.0" prefWidth="100.0" text="carica griglia" />
       </children>
    </HBox>
-   <HBox prefHeight="100.0" prefWidth="200.0">
+   <Line endX="655.2929077148438" endY="-1.038108229637146" startX="-100.0" startY="-1.0355340242385864" />
+   <HBox prefHeight="100.0" prefWidth="793.0">
       <children>
-         <Button mnemonicParsing="false" onAction="#caricaGriglia" text="Carica griglia" />
+         <Button mnemonicParsing="false" onAction="#caricaGriglia" text="Carica griglia da file" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-         <Button fx:id="esporta" disable="true" mnemonicParsing="false" onAction="#esportaGriglia" text="Esporta griglia" />
+         <Button fx:id="esporta" disable="true" mnemonicParsing="false" onAction="#esportaGriglia" text="Esporta griglia su file" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-         <Button mnemonicParsing="false" onAction="#mostraSoluzione" text="Mostra soluzione" />
+         <Button disable="true" mnemonicParsing="false" onAction="#mostraSoluzione" text="Mostra soluzione" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-         <Button mnemonicParsing="false" text="Prossima" />
+         <Button disable="true" mnemonicParsing="false" text="Prossima" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-         <Button mnemonicParsing="false" text="Precedente" />
+         <Button disable="true" mnemonicParsing="false" text="Precedente" />
       </children>
    </HBox>
-   <HBox prefHeight="100.0" prefWidth="200.0">
+   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <children>
-         <TextField fx:id="caricaFile" prefHeight="26.0" prefWidth="205.0" promptText="(Inserisci percorso file)" visible="false" />
+         <TextField fx:id="caricaFile" prefHeight="26.0" prefWidth="294.0" promptText="(Inserisci percorso file)" visible="false" />
       </children>
    </HBox>
    <Label fx:id="istruzione" text="Specifica la configurazione di gioco" visible="false" />
