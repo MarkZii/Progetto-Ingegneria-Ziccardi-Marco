@@ -5,122 +5,59 @@ import director.DocumentParser;
 import director.TextParseException;
 import visitor.DocumentVisitor;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Griglia extends Problema<Punto, Integer> {
+public final class Griglia extends Problema<Punto, Integer> {
     private int[][] griglia;
-    private int size;
-    private Punto puntoS;
-    private Punto puntoF;
-    private LinkedList<Gruppo> gruppi = new LinkedList<>();
+    private final int size;
+    private final Punto puntoS;
+    private final Punto puntoF;
+    private final LinkedList<Gruppo> gruppi = new LinkedList<>();
+
+    private LinkedList<Integer[][]> soluzioni = new LinkedList<>();
 
     public Griglia(int numSol, int size, LinkedList<Gruppo> gruppi) {
         super(numSol);
         this.size = size;
-        gruppi = new LinkedList<>(gruppi);
+        for(Gruppo g: gruppi){
+            LinkedList<Punto> punti = new LinkedList<>();
+            for(Punto p: g.getPunti()){
+                punti.add(new Punto(p.getRiga(), p.getColonna()));
+            }
+            Gruppo ng = new Gruppo(g.getValue(),g.getOperazione(),punti);
+            this.gruppi.add(ng);
+        }
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
         griglia = new int[size][size];
-        for(int i=0; i<size; i++)
-            for(int j=0; j<size; j++)
-                griglia[i][j] = 0;
     }
 
-    public Griglia(int size, int numSol){
+
+
+    public Griglia(int numSol, String file) throws Exception {
         super(numSol);
-        this.size=size;
-        puntoS = new Punto(0,0);
-        puntoF = new Punto((size-1),(size-1));
-        griglia = new int[size][size];
-
-        for(int i=0; i<size; i++)
-            for(int j=0; j<size; j++)
-                griglia[i][j] = 0;
-/*
-        Punto p1 = new Punto(0,0);
-        Punto p2 = new Punto(0,1);
-        LinkedList<Punto> l = new LinkedList<>();
-        l.add(p1);
-        l.add(p2);
-        Gruppo g1 = new Gruppo(2, "divisione", l);
-
-        Punto p3 = new Punto(0,2);
-        Punto p4 = new Punto(1,2);
-        LinkedList<Punto> l1 = new LinkedList<>();
-        l1.add(p3);
-        l1.add(p4);
-        Gruppo g2 = new Gruppo(7, "piu", l1);
-
-        Punto p5 = new Punto(1,0);
-        Punto p6 = new Punto(2,0);
-        LinkedList<Punto> l2 = new LinkedList<>();
-        l2.add(p5);
-        l2.add(p6);
-        Gruppo g3 = new Gruppo(1, "meno", l2);
-
-        Punto p7 = new Punto(1,1);
-        Punto p8 = new Punto(2,1);
-        LinkedList<Punto> l3 = new LinkedList<>();
-        l3.add(p7);
-        l3.add(p8);
-        Gruppo g4 = new Gruppo(3, "meno", l3);
-
-        Punto p9 = new Punto(0,3);
-        LinkedList<Punto> l4 = new LinkedList<>();
-        l4.add(p9);
-        Gruppo g5 = new Gruppo(4, "piu", l4);
-
-        Punto p10 = new Punto(1,3);
-        Punto p11 = new Punto(2,3);
-        LinkedList<Punto> l5 = new LinkedList<>();
-        l5.add(p10);
-        l5.add(p11);
-        Gruppo g6 = new Gruppo(2, "meno", l5);
-
-        Punto p12 = new Punto(3,0);
-        Punto p13 = new Punto(3,1);
-        LinkedList<Punto> l6 = new LinkedList<>();
-        l6.add(p12);
-        l6.add(p13);
-        Gruppo g7 = new Gruppo(1, "meno", l6);
-
-        Punto p14 = new Punto(2,2);
-        Punto p15 = new Punto(3,2);
-        Punto p16 = new Punto(3,3);
-        LinkedList<Punto> l7 = new LinkedList<>();
-        l7.add(p14);
-        l7.add(p15);
-        l7.add(p16);
-        Gruppo g8 = new Gruppo(4, "moltiplicazione", l7);
-
-        gruppi.add(g1);
-        gruppi.add(g2);
-        gruppi.add(g3);
-        gruppi.add(g4);
-        gruppi.add(g5);
-        gruppi.add(g6);
-        gruppi.add(g7);
-        gruppi.add(g8);
-
-*/
-        scriviSoluzione(0);
-    }
-
-    public Griglia(int numSol, String file) throws TextParseException {
-        super(numSol);
+        System.out.println("stran1o");
         GrigliaBuilder builder = new GrigliaBuilder();
         DocumentParser tp = new DocumentParser(builder, file);
+        System.out.println("strano2");
         tp.build();
+        System.out.println("strano3");
         size = builder.getSize();
-        gruppi = new LinkedList<>(builder.getGruppi());
+        LinkedList<Gruppo> c = builder.getGruppi();
+        System.out.println("ciao" +c);
+        for(Gruppo g: c){
+            LinkedList<Punto> punti = new LinkedList<>();
+            for(Punto p: g.getPunti()){
+                punti.add(new Punto(p.getRiga(), p.getColonna()));
+            }
+            Gruppo ng = new Gruppo(g.getValue(),g.getOperazione(),punti);
+            this.gruppi.add(ng);
+        }
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
         griglia = new int[size][size];
-
-        for(int i=0; i<size; i++)
-            for(int j=0; j<size; j++)
-                griglia[i][j] = 0;
     }
 
     @Override
@@ -283,6 +220,11 @@ public class Griglia extends Problema<Punto, Integer> {
                 System.out.print(griglia[i][j]);
             System.out.println();
         }
+        Integer[][] copia = new Integer[size][size];
+        for(int i=0; i<size; i++)
+            for (int j = 0; j < size; j++)
+                copia[i][j]=griglia[i][j];
+        soluzioni.add(copia);
     }
 
     public int getSize() {
@@ -290,22 +232,20 @@ public class Griglia extends Problema<Punto, Integer> {
     }
 
     public LinkedList<Gruppo> getGruppi() {
-        return new LinkedList<>(gruppi);
+        LinkedList<Gruppo> ret = new LinkedList<>();
+        for(Gruppo g: gruppi){
+            LinkedList<Punto> punti = new LinkedList<>();
+            for(Punto p: g.getPunti()){
+                punti.add(new Punto(p.getRiga(), p.getColonna()));
+            }
+            Gruppo ng = new Gruppo(g.getValue(),g.getOperazione(),punti);
+            ret.add(ng);
+        }
+        return ret;
     }
 
-    //per implementare il memento sarà scrivi soluzione a introdurre un comando così che il command lo salva.
-    public Memento save(){
-        return new Memento(griglia);
-    }
-    public void restore(Memento memento){
-        for(int i=0; i< griglia.length; i++){
-            for(int j=0; i< griglia.length; i++){
-                this.griglia[i][j] = griglia[i][j];
-            }
-        }
-    }
-    public int[][] risultato(){
-        return griglia;
+    public LinkedList<Integer[][]> risultati(){
+        return soluzioni;
     }
 
     public void accept(DocumentVisitor visitor){

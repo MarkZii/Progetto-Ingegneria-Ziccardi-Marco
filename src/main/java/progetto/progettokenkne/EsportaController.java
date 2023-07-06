@@ -17,18 +17,22 @@ public class EsportaController {
     @FXML private Label errore;
     private Griglia griglia;
     @FXML
-    public void esportaFile() throws FileNotFoundException {
+    public void esportaFile() {
         String nomeF = nomeFile.getText();
         String percorso = nomePercorso.getText();
-        if(!nomeF.equals("") && !percorso.equals("")) {
-            errore.setText("");
-            PrintWriter pw = null;
-            pw = new PrintWriter(percorso + "\\" + nomeF);
-            DocumentVisitor visitor = new TextVisitor(pw);
-            griglia.accept(visitor);
-            pw.close();
-        }else{
-            errore.setText("ERRORE, riempire entrambi i campi");
+        try {
+            if (!nomeF.equals("") && !percorso.equals("")) {
+                errore.setText("");
+                PrintWriter pw = null;
+                pw = new PrintWriter(percorso + "\\" + nomeF);
+                DocumentVisitor visitor = new TextVisitor(pw);
+                griglia.accept(visitor);
+                pw.close();
+            } else {
+                errore.setText("ERRORE, riempire entrambi i campi");
+            }
+        }catch (FileNotFoundException e){
+            errore.setText("ERRORE, file non trovato");
         }
     }
     public void inizializzazione(Griglia g){

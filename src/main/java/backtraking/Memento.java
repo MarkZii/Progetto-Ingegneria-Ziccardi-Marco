@@ -4,9 +4,10 @@ public class Memento {
     int[][] griglia;
 
     Memento(int[][] griglia){
-        this.griglia = new int[griglia.length][griglia.length];
-        for(int i=0; i< griglia.length; i++){
-            for(int j=0; i< griglia.length; i++){
+        int size = griglia.length;
+        this.griglia = new int[size][size];
+        for(int i=0; i<size; i++){
+            for(int j=0; j<size; j++){
                 this.griglia[i][j] = griglia[i][j];
             }
         }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Kenken {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Griglia sc = new Griglia(4,1);
+       //Griglia sc = new Griglia(4,1);
 
         /*Scanner scanner = new Scanner(System.in);
         System.out.println("Inserisci nome file");
@@ -22,7 +22,7 @@ public class Kenken {
 
         sc.accept(dv);*/
 
-        sc.risolvi();
+        //sc.risolvi();
         //pw.close();
     }
 }

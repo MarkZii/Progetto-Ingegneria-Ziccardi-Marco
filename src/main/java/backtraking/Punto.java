@@ -56,9 +56,6 @@ public final class Punto {
 
     @Override
     public String toString() {
-        return "Punto{" +
-                "riga=" + riga +
-                ", colonna=" + colonna +
-                '}';
+        return "Punto{riga="+riga+", colonna="+colonna+'}';
     }
 }

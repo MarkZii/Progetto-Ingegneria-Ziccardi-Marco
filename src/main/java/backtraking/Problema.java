@@ -27,71 +27,17 @@ public abstract class Problema<P, S> {
 
 	private int num_max_soluzioni, nr_soluzione = 0;
 
+	public void setNum_max_soluzioni(int num){
+		num_max_soluzioni = num;
+	}
 	public Problema(int num_max_soluzioni) {
 		this.num_max_soluzioni = num_max_soluzioni;
 	}
-
 	public Problema() {
 		this(Integer.MAX_VALUE);
 	}
+
 	public final void risolvi() { // template method
-		P ps = primoPuntoDiScelta();
-		S s = primaScelta(ps);
-		System.out.println(ps+"   "+s);
-		boolean backtrack = false, fine = false;
-		do {
-			// forward
-			while (!backtrack && nr_soluzione < num_max_soluzioni) {
-				if (assegnabile(s, ps)) {
-
-					assegna(s, ps);
-					System.out.println("assegnato");
-					scriviSoluzione(nr_soluzione);
-					if (ps.equals(ultimoPuntoDiScelta())) {
-						System.out.println("ULTIMO PUNTO");
-						++nr_soluzione;
-						scriviSoluzione(nr_soluzione);
-						deassegna(s, ps);
-						if (!s.equals(ultimaScelta(ps)))
-							s = prossimaScelta(s);
-						else {
-							System.out.println("ci sono2");
-
-							backtrack = true;
-						}
-					} else {
-						ps = prossimoPuntoDiScelta(ps);
-						s = primaScelta(ps);
-						System.out.println(ps+"   "+s);
-					}
-
-				} else if (!s.equals(ultimaScelta(ps))){
-					s = prossimaScelta(s);
-					System.out.println("Nuova soluzione "+s);
-				}else {
-					System.out.println("devo fare back");
-					backtrack = true;
-				}
-			}// while( !backtrack ... )
-				// backward
-			fine = ps.equals(primoPuntoDiScelta()) || nr_soluzione == num_max_soluzioni;
-			System.out.println(nr_soluzione == num_max_soluzioni);
-			System.out.println(backtrack+"   "+fine);
-			System.out.println(ps+"   "+primoPuntoDiScelta());
-			while (backtrack && !fine) {
-				System.out.println("backtraking");
-				ps = precedentePuntoDiScelta(ps);
-				s = ultimaSceltaAssegnataA(ps);
-				deassegna(s, ps);
-				if (!s.equals(ultimaScelta(ps))) {
-					s = prossimaScelta(s);
-					backtrack = false;
-				} else if (ps.equals(primoPuntoDiScelta()))
-					fine = true;
-			}
-		} while (!fine);
-	}// risolvi
-	/*public final void risolvi() { // template method
 		P ps = primoPuntoDiScelta();
 		S s = primaScelta(ps);
 		boolean backtrack = false, fine = false;
@@ -131,5 +77,5 @@ public abstract class Problema<P, S> {
 					fine = true;
 			}
 		} while (!fine);
-	}// risolvi*/
+	}
 }

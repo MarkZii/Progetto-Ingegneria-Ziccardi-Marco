@@ -12,11 +12,11 @@ public final class Gruppo {
     public Gruppo() {
         value=0;
         operazione=" ";
-        punti= new LinkedList<>();
+        punti = new LinkedList<>();
     }
     public Gruppo(int v, String o, LinkedList<Punto> p){
         value=v;
-        operazione=o;
+        operazione= new String(o);
         punti= new LinkedList<>(p);
     }
     public Gruppo(LinkedList<Punto> p){
@@ -28,7 +28,7 @@ public final class Gruppo {
     }
 
     public void setPunti(LinkedList<Punto> punti) {
-        this.punti = punti;
+        this.punti = new LinkedList<>(punti);;
     }
 
     public void setValue(int value) {
@@ -44,11 +44,11 @@ public final class Gruppo {
     }
 
     public LinkedList<Punto> getPunti() {
-        return punti;
+        return new LinkedList<>(punti);
     }
 
     public String getOperazione() {
-        return operazione;
+        return new String(operazione);
     }
 
     public void accept(TextVisitor visitor){
