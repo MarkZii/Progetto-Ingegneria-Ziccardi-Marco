@@ -7,16 +7,10 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class DocumentParser {
-
 	private final String string;
-
 	private Scanner scanner;
-
 	private StringTokenizer st;
-	//private int lineNr = 0;
-
 	private final GrigliaBuilderIF builder;
-
 	private String token;
 
 	public DocumentParser(GrigliaBuilderIF builder, String string) {
@@ -26,9 +20,7 @@ public class DocumentParser {
 
 	private String nextToken() {
 		while (st == null || !st.hasMoreTokens()) {
-			String line = null;
-			line = scanner.nextLine();
-			//lineNr++;
+			String line = scanner.nextLine();
 			if (line == null)
 				return null;
 			st = new StringTokenizer(line);

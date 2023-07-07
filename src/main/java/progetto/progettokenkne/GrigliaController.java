@@ -39,9 +39,12 @@ public class GrigliaController {
     private LinkedList<String> colori = new LinkedList<>();
     private Griglia sc;
     private String operazione;
-    private LinkedList<Integer[][]> soluzione;
+    private int[][] soluzione;
+    private LinkedList<Integer[][]> soluzioni;
     int numSol = 0;
-    public void initialize() {istruzione.setVisible(false);}
+
+    public void initialize() {
+        istruzione.setVisible(false);}
     @FXML
     protected void grigliaButtonClick() {
         if(dimensione.getText().equals("")){
@@ -175,13 +178,18 @@ public class GrigliaController {
         //aggiunta delle textfield nella griglia
         int i = 0;
         boolean ok = true;
-        System.out.println("cioa" + gruppi);
+        soluzione = new int[size][size];
+        for(int k=0; k<size; k++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(soluzione[k][j]);
+            System.out.println();
+        }
         for (Gruppo g : gruppi) {
             System.out.println(colori);
             String colore = colori.get(i);
             for (Punto p : g.getPunti()) {
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
-                text.setStyle("-fx-border-color: #" + colore + ";-fx-border-width: 2px; -fx-background-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px");
+                text.setStyle("-fx-border-color: #" + colore + "; -fx-background-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px");
                 Label label = new Label();
                 VBox root = new VBox();
                 textFields.add(text);
@@ -205,6 +213,10 @@ public class GrigliaController {
                 root.getChildren().addAll(label, text);
                 griglia.add(root, p.getColonna(), p.getRiga());
                 ok = false;
+                text.textProperty().addListener((observable, oldValue, newValue) -> {
+                    soluzione[text.getRiga()][text.getColonna()] = Integer.parseInt(newValue);
+                    System.out.println("TextField " + ": " + newValue);
+                });
             }
             ok = true;
             i++;
@@ -268,21 +280,23 @@ public class GrigliaController {
         }
     }
     private  boolean eTropppoScuro(int r, int g, int b) {
-        double luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255; //calcolo la luminosità dei colori
-        return luminance < 0.5; //verifico che la luminosità è inferiore a un valore
+        double lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255; //calcolo la luminosità dei colori
+        System.out.println(lum + " " +(lum < 0.5 && lum >0.2));
+        return lum < 0.5 && lum >0.2;//verifico che la luminosità è inferiore a un valore
     }
 
     public void mostraSoluzione() {
         try {
+            sc.setGriglia(new int[size][size]);
             if (!caricaFile.getText().equals("") && !(Integer.parseInt(caricaFile.getText())<=0)) {
                 sc.setNum_max_soluzioni(Integer.parseInt(caricaFile.getText()));
                 sc.risolvi();
-                soluzione = sc.risultati();
-                Integer[][] primo = soluzione.get(numSol);
+                soluzioni = sc.risultati();
+                Integer[][] primo = soluzioni.get(numSol);
                 for (TextFieldC t : textFields) {
                     t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
                 }
-                if (soluzione.size() == 1) {
+                if (soluzioni.size() == 1) {
                     istruzione.setText("Unica soluzione");
                 } else {
                     istruzione.setText("Soluzione numero: " + numSol);
@@ -297,14 +311,14 @@ public class GrigliaController {
             istruzione.setText("ERRORE: inserire solo numeri");
         }
     }
-    public void successivaSoluzione(){
+    @FXML public void successivaSoluzione(){
         precedente.setDisable(false);
-        Integer[][] primo = soluzione.get(numSol);
+        Integer[][] primo = soluzioni.get(numSol);
         for(TextFieldC t: textFields){
             t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
         }
         istruzione.setText("Soluzione numero: "+numSol);
-        if(numSol == soluzione.size()){
+        if(numSol == soluzioni.size()){
             successiva.setDisable(true);
             return;
         }
@@ -312,7 +326,7 @@ public class GrigliaController {
     }
     public void precedenteSoluzione(){
         successiva.setDisable(false);
-        Integer[][] primo = soluzione.get(numSol);
+        Integer[][] primo = soluzioni.get(numSol);
         for(TextFieldC t: textFields){
             t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
         }
@@ -333,7 +347,33 @@ public class GrigliaController {
         stage.showAndWait();
     }
     public void verificaSoluzione(){
-
+        sc.setGriglia(new int[size][size]);
+        boolean alcuniNull = false;
+        for(int i=0; i<size; i++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(soluzione[i][j]);
+            System.out.println();
+        }
+        for(int i=0; i<size; i++) {
+            for (int j = 0; j < size; j++){
+                if(soluzione[i][j] != 0){
+                    Punto p = new Punto(i,j);
+                    if(!sc.assegnabile(soluzione[i][j], p)) {
+                        System.out.println("ciaooo");
+                        istruzione.setText("Non tutti i valori inseriti sono corretti. Reinserire");
+                        return;
+                    }else{
+                        sc.assegna(soluzione[i][j], p);
+                    }
+                }else{
+                    alcuniNull = true;
+                }
+            }
+        }
+        if(!alcuniNull)
+            istruzione.setText("HAI TROVATO LA SOLUZIONE, complimenti");
+        else
+            istruzione.setText("Valori corretti");
     }
     public void caricaGriglia() {
         scecificheGruppo.setVisible(false);
