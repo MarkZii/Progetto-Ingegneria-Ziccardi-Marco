@@ -350,16 +350,10 @@ public class GrigliaController {
         sc.setGriglia(new int[size][size]);
         boolean alcuniNull = false;
         for(int i=0; i<size; i++) {
-            for (int j = 0; j < size; j++)
-                System.out.print(soluzione[i][j]);
-            System.out.println();
-        }
-        for(int i=0; i<size; i++) {
             for (int j = 0; j < size; j++){
                 if(soluzione[i][j] != 0){
                     Punto p = new Punto(i,j);
                     if(!sc.assegnabile(soluzione[i][j], p)) {
-                        System.out.println("ciaooo");
                         istruzione.setText("Non tutti i valori inseriti sono corretti. Reinserire");
                         return;
                     }else{

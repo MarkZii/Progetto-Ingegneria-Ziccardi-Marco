@@ -95,7 +95,7 @@ public final class Griglia extends Problema<Punto, Integer> {
         for (int i = 0; i < size; i++)
             if (griglia[puntoDiScelta.getRiga()][i] == scelta || griglia[i][puntoDiScelta.getColonna()] == scelta)
                 return false;
-        System.out.print("ciaoooooooo");
+
         //Verifca del fatto che rispetta i vincoli del gruppo
         boolean valore = true;
         assegna(scelta, puntoDiScelta);
@@ -209,12 +209,6 @@ public final class Griglia extends Problema<Punto, Integer> {
 
     @Override
     protected void scriviSoluzione(int nr_sol) {
-        System.out.println("Soluzione nr " + nr_sol);
-        for(int i=0; i<size; i++) {
-            for (int j = 0; j < size; j++)
-                System.out.print(griglia[i][j]);
-            System.out.println();
-        }
         Integer[][] copia = new Integer[size][size];
         for(int i=0; i<size; i++)
             for (int j = 0; j < size; j++)
