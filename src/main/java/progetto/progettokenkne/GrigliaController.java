@@ -271,10 +271,12 @@ public class GrigliaController {
     }
 
     public void mostraSoluzione() {
+        int sol = 0;
         try {
             sc.setGriglia(new int[size][size]);
             if (!caricaFile.getText().equals("") && !(Integer.parseInt(caricaFile.getText())<=0)) {
-                sc.setNum_max_soluzioni(Integer.parseInt(caricaFile.getText()));
+                sol = Integer.parseInt(caricaFile.getText());
+                sc.setNum_max_soluzioni(sol);
                 sc.risolvi();
                 soluzioni = sc.risultati();
                 Integer[][] primo = soluzioni.get(numSol);
@@ -284,17 +286,20 @@ public class GrigliaController {
                 if (soluzioni.size() == 1) {
                     istruzione.setText("Unica soluzione");
                 } else {
-                    istruzione.setText("Soluzione numero: " + (numSol+1));
+                    if(sol > soluzioni.size())
+                        istruzione.setText("Non ci sono "+sol+" soluzioni. Soluzione numero: " + (numSol+1));
+                    else
+                        istruzione.setText("Soluzione numero: " + (numSol+1));
+
                     successiva.setDisable(false);
                 }
                 numSol++;
                 mostra.setDisable(true);
                 verifica.setDisable(true);
-
+                caricaFile.setVisible(false);
             } else {
                 istruzione.setText("Inserire numero (positivo) di soluzioni da trovare!!");
             }
-            caricaFile.setVisible(false);
         }catch (NumberFormatException e){
             istruzione.setText("ERRORE: inserire solo numeri");
         }catch (Exception e){
@@ -312,6 +317,8 @@ public class GrigliaController {
             successiva.setDisable(true);
             numSol--;
             return;
+        }else{
+            istruzione.setText("Soluzione numero: "+(numSol+1));
         }
         numSol++;
     }
