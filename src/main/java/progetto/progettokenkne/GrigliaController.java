@@ -23,7 +23,7 @@ public class GrigliaController {
     public int size=0;
     @FXML private TextField dimensione, sceltaVal, caricaFile;
     @FXML private HBox inizializzazione;
-    @FXML private Button confermaStruttura, esporta, bottomDaFile, precedente, successiva, mostra;
+    @FXML private Button confermaStruttura, esporta, bottomDaFile, precedente, successiva, mostra, verifica;
     @FXML private GridPane griglia;
     @FXML private Label istruzione, celleScelte, textError, erroreSalva;
     @FXML private VBox scecificheGruppo;
@@ -124,13 +124,10 @@ public class GrigliaController {
         gruppo = new Gruppo();
         punti = new LinkedList<>();
         button = new LinkedList<>();
-        System.out.println(gruppi);
-        System.out.println(punti);
         erroreSalva.setText("");
         celleScelte.setText("");
         sceltaVal.setText("");
         sceltaOp.setText("Scegli operazione");
-        System.out.println(tuttiButton.size());
     }
     @FXML
     private void resettaTutto(){
@@ -142,17 +139,16 @@ public class GrigliaController {
         gruppo = new Gruppo();
         punti = new LinkedList<>();
         gruppi = new LinkedList<>();
-        System.out.println(gruppi);
-        System.out.println(punti);
         erroreSalva.setText("");
         celleScelte.setText("");
         sceltaVal.setText("");
         sceltaOp.setText("Scegli operazione");
-        System.out.println(tuttiButton.size());
     }
     @FXML
     private void confermaStruttura() {
         try {
+            verifica.setDisable(false);
+            caricaFile.setVisible(true);
             if (daFile) {
                 caricaDaFile();
             } else {
@@ -179,13 +175,7 @@ public class GrigliaController {
         int i = 0;
         boolean ok = true;
         soluzione = new int[size][size];
-        for(int k=0; k<size; k++) {
-            for (int j = 0; j < size; j++)
-                System.out.print(soluzione[k][j]);
-            System.out.println();
-        }
         for (Gruppo g : gruppi) {
-            System.out.println(colori);
             String colore = colori.get(i);
             for (Punto p : g.getPunti()) {
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
@@ -215,7 +205,6 @@ public class GrigliaController {
                 ok = false;
                 text.textProperty().addListener((observable, oldValue, newValue) -> {
                     soluzione[text.getRiga()][text.getColonna()] = Integer.parseInt(newValue);
-                    System.out.println("TextField " + ": " + newValue);
                 });
             }
             ok = true;
@@ -239,19 +228,16 @@ public class GrigliaController {
     @FXML
     private void sceltaSomma(){
         operazione = "piu";
-        //gruppo.setOperazione("piu");
         sceltaOp.setText(somma.getText());
     }
     @FXML
     private void sceltaMoltiplicazione(){
         operazione = "moltiplicazione";
-        //gruppo.setOperazione("moltiplicazione");
         sceltaOp.setText(prodotto.getText());
     }
     @FXML
     private void sceltaDivisione(){
         operazione = "divisione";
-        //gruppo.setOperazione("divisione");
         sceltaOp.setText(divisione.getText());
     }
 
@@ -281,7 +267,6 @@ public class GrigliaController {
     }
     private  boolean eTropppoScuro(int r, int g, int b) {
         double lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255; //calcolo la luminosità dei colori
-        System.out.println(lum + " " +(lum < 0.5 && lum >0.2));
         return lum < 0.5 && lum >0.2;//verifico che la luminosità è inferiore a un valore
     }
 
@@ -299,16 +284,21 @@ public class GrigliaController {
                 if (soluzioni.size() == 1) {
                     istruzione.setText("Unica soluzione");
                 } else {
-                    istruzione.setText("Soluzione numero: " + numSol);
+                    istruzione.setText("Soluzione numero: " + (numSol+1));
                     successiva.setDisable(false);
                 }
                 numSol++;
                 mostra.setDisable(true);
+                verifica.setDisable(true);
+
             } else {
                 istruzione.setText("Inserire numero (positivo) di soluzioni da trovare!!");
             }
+            caricaFile.setVisible(false);
         }catch (NumberFormatException e){
             istruzione.setText("ERRORE: inserire solo numeri");
+        }catch (Exception e){
+            istruzione.setText("Non ci sono soluzioni");
         }
     }
     @FXML public void successivaSoluzione(){
@@ -317,9 +307,10 @@ public class GrigliaController {
         for(TextFieldC t: textFields){
             t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
         }
-        istruzione.setText("Soluzione numero: "+numSol);
-        if(numSol == soluzioni.size()){
+        istruzione.setText("Soluzione numero: "+(numSol+1));
+        if(numSol == (soluzioni.size()-1)){
             successiva.setDisable(true);
+            numSol--;
             return;
         }
         numSol++;
@@ -330,10 +321,13 @@ public class GrigliaController {
         for(TextFieldC t: textFields){
             t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
         }
-        istruzione.setText("Soluzione numero: "+numSol);
+        istruzione.setText("Soluzione numero: "+(numSol+1));
+        if(numSol == 0){
+            precedente.setDisable(true);
+            numSol++;
+            return;
+        }
         numSol--;
-        if(numSol == 00) precedente.setDisable(true);
-
     }
 
     public void esportaGriglia() throws IOException {//MEMENTO
