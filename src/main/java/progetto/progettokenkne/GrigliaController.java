@@ -204,7 +204,9 @@ public class GrigliaController {
                 griglia.add(root, p.getColonna(), p.getRiga());
                 ok = false;
                 text.textProperty().addListener((observable, oldValue, newValue) -> {
-                    soluzione[text.getRiga()][text.getColonna()] = Integer.parseInt(newValue);
+                    try {
+                        soluzione[text.getRiga()][text.getColonna()] = Integer.parseInt(newValue);
+                    }catch (Exception e){}
                 });
             }
             ok = true;
@@ -256,18 +258,16 @@ public class GrigliaController {
         Random random = new Random();
         int r, g, b;
         for (int i = 0; i < gruppi.size(); i++){//genera size() coloi casuali e poi verirfica che non sia scuro
+            double bianco;
             do {
                 r = random.nextInt(256);
                 g = random.nextInt(256);
                 b = random.nextInt(256);
-            } while (eTropppoScuro(r, g, b));
+                bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
+                } while (!(bianco >= 35 && bianco <=65));
             String esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
             colori.add(esadecimale);
         }
-    }
-    private  boolean eTropppoScuro(int r, int g, int b) {
-        double lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255; //calcolo la luminosità dei colori
-        return lum < 0.5 && lum >0.2;//verifico che la luminosità è inferiore a un valore
     }
 
     public void mostraSoluzione() {
