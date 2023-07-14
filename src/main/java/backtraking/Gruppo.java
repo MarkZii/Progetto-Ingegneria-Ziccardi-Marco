@@ -54,6 +54,7 @@ public final class Gruppo {
     public void accept(TextVisitor visitor){
         visitor.visit(this);
     }
+
     @Override
     public String toString() {
         return "Gruppo{"+value+operazione+"  "+punti+"}";

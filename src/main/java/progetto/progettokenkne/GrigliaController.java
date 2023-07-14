@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -22,7 +23,7 @@ import java.util.Random;
 public class GrigliaController {
     public int size=0;
     @FXML private TextField dimensione, sceltaVal, caricaFile;
-    @FXML private HBox inizializzazione;
+    @FXML private HBox inizializzazione, boxGriglia;
     @FXML private Button confermaStruttura, esporta, bottomDaFile, precedente, successiva, mostra, verifica;
     @FXML private GridPane griglia;
     @FXML private Label istruzione, celleScelte, textError, erroreSalva;
@@ -44,7 +45,9 @@ public class GrigliaController {
     int numSol = 0;
 
     public void initialize() {
-        istruzione.setVisible(false);}
+        istruzione.setVisible(false);
+    }
+
     @FXML
     protected void grigliaButtonClick() {
         if(dimensione.getText().equals("")){
@@ -58,6 +61,9 @@ public class GrigliaController {
                     istruzione.setVisible(true);
                     inizializzazione.setVisible(false);
                     scecificheGruppo.setVisible(true);
+                    boxGriglia.setVisible(true);
+                    istruzione.setVisible(true);
+                    istruzione.setText("Specifica la configurazione di gioco");
                     creazioneGrid();
                 }
             }catch (NumberFormatException e){
@@ -81,6 +87,7 @@ public class GrigliaController {
         };
 
         //aggiunta dei nodi nella griglia
+        griglia.getChildren().clear();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Buttonc button = new Buttonc("premi",i,j);
@@ -144,6 +151,7 @@ public class GrigliaController {
         sceltaVal.setText("");
         sceltaOp.setText("Scegli operazione");
     }
+
     @FXML
     private void confermaStruttura() {
         try {
@@ -156,6 +164,7 @@ public class GrigliaController {
                 sc = new Griglia(1, size, gruppi);
                 disegnaStruttura();
             }
+            boxGriglia.setVisible(true);
             mostra.setDisable(false);
             istruzione.setText("La griglia è pronta, gioca");
             confermaStruttura.setVisible(false);
@@ -167,6 +176,7 @@ public class GrigliaController {
             istruzione.setText("ERRORE: file non trovato o formato errato o errore nei TAG");
         }
     }
+
     private void disegnaStruttura(){
         esporta.setDisable(false);
         griglia.getChildren().clear();
@@ -205,8 +215,13 @@ public class GrigliaController {
                 ok = false;
                 text.textProperty().addListener((observable, oldValue, newValue) -> {
                     try {
-                        soluzione[text.getRiga()][text.getColonna()] = Integer.parseInt(newValue);
-                    }catch (Exception e){}
+                        int val = Integer.parseInt(newValue);
+                        if(val <= 0 || val > size) throw new Exception();
+                        soluzione[text.getRiga()][text.getColonna()] = val;
+                    }catch (Exception e){
+                        istruzione.setText("ERRORE, solo numeri o nell'intervallo <1,"+size+">");
+                        istruzione.setTextFill(Color.RED);
+                    }
                 });
             }
             ok = true;
@@ -259,13 +274,15 @@ public class GrigliaController {
         int r, g, b;
         for (int i = 0; i < gruppi.size(); i++){//genera size() coloi casuali e poi verirfica che non sia scuro
             double bianco;
+            String esadecimale = null;
             do {
                 r = random.nextInt(256);
                 g = random.nextInt(256);
                 b = random.nextInt(256);
                 bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
-                } while (!(bianco >= 35 && bianco <=65));
-            String esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
+                esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
+            } while (!(bianco >= 35 && bianco <=65) && colori.contains(esadecimale));
+
             colori.add(esadecimale);
         }
     }
@@ -283,6 +300,7 @@ public class GrigliaController {
                 for (TextFieldC t : textFields) {
                     t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
                 }
+                istruzione.setTextFill(Color.GREEN);
                 if (soluzioni.size() == 1) {
                     istruzione.setText("Unica soluzione");
                 } else {
@@ -302,8 +320,10 @@ public class GrigliaController {
             }
         }catch (NumberFormatException e){
             istruzione.setText("ERRORE: inserire solo numeri");
+            istruzione.setTextFill(Color.RED);
         }catch (Exception e){
             istruzione.setText("Non ci sono soluzioni");
+            istruzione.setTextFill(Color.RED);
         }
     }
     @FXML public void successivaSoluzione(){
@@ -355,6 +375,7 @@ public class GrigliaController {
                 if(soluzione[i][j] != 0){
                     Punto p = new Punto(i,j);
                     if(!sc.assegnabile(soluzione[i][j], p)) {
+                        istruzione.setTextFill(Color.RED);
                         istruzione.setText("Non tutti i valori inseriti sono corretti. Reinserire");
                         return;
                     }else{
@@ -365,6 +386,7 @@ public class GrigliaController {
                 }
             }
         }
+        istruzione.setTextFill(Color.GREEN);
         if(!alcuniNull)
             istruzione.setText("HAI TROVATO LA SOLUZIONE, complimenti");
         else
@@ -378,5 +400,31 @@ public class GrigliaController {
         caricaFile.setVisible(true);
         confermaStruttura.setVisible(true);
         daFile = true;
+    }
+
+    @FXML
+    public void ricominciaDaCapo(){
+        System.out.println("ciadoajsoff");
+        sc = null;
+        gruppi = new LinkedList<>();;
+        punti = new LinkedList<>();;
+        button = new LinkedList<>();;
+        tuttiButton = new LinkedList<>();;
+        daFile = false;
+        textFields = new LinkedList<>();;
+        colori = new LinkedList<>();;
+        inizializzazione.setVisible(true);
+        boxGriglia.setVisible(false);
+        esporta.setDisable(true);
+        verifica.setDisable(true);
+        mostra.setDisable(true);
+        successiva.setDisable(true);
+        precedente.setDisable(true);
+        istruzione.setVisible(false);
+        caricaFile.setVisible(false);
+        bottomDaFile.setDisable(false);
+        istruzione.setTextFill(Color.BLACK);
+        celleScelte.setText("");
+        sceltaVal.setText("");
     }
 }

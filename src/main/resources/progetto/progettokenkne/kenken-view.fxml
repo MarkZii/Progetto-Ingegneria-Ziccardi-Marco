@@ -16,14 +16,20 @@
     <padding>
         <Insets bottom="20.0" left="5.0" right="5.0" top="20.0" />
     </padding>
-   <Label alignment="TOP_CENTER" prefHeight="0.0" prefWidth="290.0" text="Benvenuto" textAlignment="CENTER" textOverrun="CLIP">
-      <opaqueInsets>
-         <Insets />
-      </opaqueInsets>
-      <font>
-         <Font size="14.0" />
-      </font>
-   </Label>
+   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0">
+      <children>
+         <Label alignment="TOP_CENTER" prefHeight="0.0" prefWidth="290.0" text="Benvenuto" textAlignment="CENTER" textOverrun="CLIP">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+         <Separator prefHeight="21.0" prefWidth="169.0" visible="false" />
+         <Button mnemonicParsing="false" onAction="#ricominciaDaCapo" text="RICOMINCIA" />
+      </children>
+   </HBox>
    <HBox fx:id="inizializzazione" alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="550.0">
       <children>
          <Label prefHeight="18.0" prefWidth="197.0" text="Inserisci dimensione Griglia:">
@@ -33,7 +39,7 @@
          </Label>
          <TextField fx:id="dimensione" prefHeight="25.0" prefWidth="150.0" promptText="valori compresi tra 3 e 9" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
-          <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="30.0" prefWidth="100.0" text="carica griglia" />
+          <Button fx:id="carica" onAction="#grigliaButtonClick" prefHeight="30.0" prefWidth="100.0" text="Carica griglia" />
          <Separator prefHeight="21.0" prefWidth="38.0" visible="false" />
          <Label fx:id="textError" contentDisplay="CENTER" prefHeight="27.0" prefWidth="230.0" textAlignment="CENTER" textFill="RED" textOverrun="CLIP">
             <opaqueInsets>
@@ -61,7 +67,10 @@
       <children>
          <TextField fx:id="caricaFile" prefHeight="26.0" prefWidth="375.0" promptText="Inserisci percorso assoluto del file" visible="false" />
          <Separator prefHeight="18.0" prefWidth="8.0" visible="false" />
-         <Label fx:id="istruzione" prefHeight="18.0" prefWidth="364.0" text="Specifica la configurazione di gioco" />
+         <Label fx:id="istruzione" prefHeight="18.0" prefWidth="364.0" text="Specifica la configurazione di gioco">
+            <font>
+               <Font size="13.0" />
+            </font></Label>
       </children>
    </HBox>
    <HBox fx:id="boxGriglia" prefHeight="451.0" prefWidth="760.0">

@@ -8,10 +8,11 @@ import java.util.StringTokenizer;
 
 public class GrigliaBuilder implements GrigliaBuilderIF {
     private int size;
-    private LinkedList<Gruppo> gruppi = new LinkedList<>();
+    private LinkedList<Gruppo> gruppi;
     public GrigliaBuilder(){}
     @Override
     public void createGriglia(String dimensione) {
+        gruppi = new LinkedList<>();
         StringTokenizer st = new StringTokenizer(dimensione, " ");
         size = Integer.parseInt(st.nextToken());
     }
@@ -41,6 +42,7 @@ public class GrigliaBuilder implements GrigliaBuilderIF {
     public int getSize(){
         return size;
     }
+
     public LinkedList getGruppi(){
         return new LinkedList<Gruppo>(gruppi);
     }

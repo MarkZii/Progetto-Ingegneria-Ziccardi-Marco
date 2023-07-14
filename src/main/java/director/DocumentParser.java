@@ -35,7 +35,7 @@ public class DocumentParser {
 	}
 
 	private void readDocument() throws Exception {
-		System.out.println("read document");
+
 		token = nextToken();
 		if (token == null)
 			throw new Exception();
