@@ -1,5 +1,7 @@
 package backtraking;
 
+
+//si implementa solo la classe astratta di "Problema" per evitare di esternare all'estenro i metodi
 public abstract class Problema<P, S> {
 
 	protected abstract P primoPuntoDiScelta();

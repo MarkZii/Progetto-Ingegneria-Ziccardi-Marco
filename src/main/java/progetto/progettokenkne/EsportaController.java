@@ -2,18 +2,16 @@ package progetto.progettokenkne;
 
 import backtraking.Griglia;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import visitor.DocumentVisitor;
 import visitor.TextVisitor;
-
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+//classe che gestisce il foglio "esporta-griglia.fxml"
 public class EsportaController {
-    @FXML
-    private TextField nomeFile, nomePercorso;
+    @FXML private TextField nomeFile, nomePercorso;
     @FXML private Label errore;
     private Griglia griglia;
     @FXML

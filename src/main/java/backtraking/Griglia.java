@@ -13,10 +13,12 @@ public final class Griglia extends Problema<Punto, Integer> {
     private final LinkedList<Gruppo> gruppi = new LinkedList<>();
     private LinkedList<Integer[][]> soluzioni = new LinkedList<>();
 
-    //Costruttore che permette di costruire da inout la nuova matrice
+    //Costruttore che permette di costruire da input la nuova matrice
     public Griglia(int numSol, int size, LinkedList<Gruppo> gruppi) {
         super(numSol);
         this.size = size;
+
+        //copia profonda della lista di gruppi che mi viene passata
         for(Gruppo g: gruppi){
             LinkedList<Punto> punti = new LinkedList<>();
             for(Punto p: g.getPunti()){
@@ -25,20 +27,26 @@ public final class Griglia extends Problema<Punto, Integer> {
             Gruppo ng = new Gruppo(g.getValue(),g.getOperazione(),punti);
             this.gruppi.add(ng);
         }
+
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
         griglia = new int[size][size];
     }
 
-    //Costruttore che permette di leggere da file lo schema di gioco
+    //Costruttore che permette di leggere da file lo griglia di gioco
     public Griglia(int numSol, String file) throws Exception {
         super(numSol);
+
+        //builder che mi serve per andare a leggere da file la griglia
         GrigliaBuilder builder = new GrigliaBuilder();
         DocumentParser tp = new DocumentParser(builder, file);
         tp.build();
+
         size = builder.getSize();
         LinkedList<Gruppo> c = builder.getGruppi();
-        for(Gruppo g: c){
+
+        //copia profonda della lista dei gruppi
+        for(Gruppo g: c) {
             LinkedList<Punto> punti = new LinkedList<>();
             for(Punto p: g.getPunti()){
                 punti.add(new Punto(p.getRiga(), p.getColonna()));
@@ -46,6 +54,7 @@ public final class Griglia extends Problema<Punto, Integer> {
             Gruppo ng = new Gruppo(g.getValue(),g.getOperazione(),punti);
             this.gruppi.add(ng);
         }
+
         puntoS = new Punto(0,0);
         puntoF = new Punto((size-1),(size-1));
         griglia = new int[size][size];
@@ -54,19 +63,17 @@ public final class Griglia extends Problema<Punto, Integer> {
     @Override
     protected Punto primoPuntoDiScelta() {
         return new Punto(0,0);
-
     }
 
     @Override
     protected Punto prossimoPuntoDiScelta(Punto ps) {
-        if(puntoS.getColonna() == size-1){
+        if(puntoS.getColonna() == size-1){ //se sono arrivato all'ultima colonna passo alla prossima riga
             puntoS.rigaInc();
             puntoS.setColonna(0);
         }else {
             puntoS.colonnaInc();
         }
         return puntoS;
-
     }
 
     @Override
@@ -98,7 +105,7 @@ public final class Griglia extends Problema<Punto, Integer> {
 
         //Verifca del fatto che rispetta i vincoli del gruppo
         boolean valore = true;
-        assegna(scelta, puntoDiScelta);
+        assegna(scelta, puntoDiScelta); //mi facilita di molto andare a verificare se il gruppo al completo di cui fa parte rispetta il vincolo
         for(Gruppo g: gruppi){
             LinkedList<Punto> lista = g.getPunti();
             if(lista.contains(puntoDiScelta) && gruppoPieno(lista)){
@@ -130,6 +137,7 @@ public final class Griglia extends Problema<Punto, Integer> {
         }
         return sum == value;
     }
+
     //Verifica del vincolo di sottrazione sul gruppo
     private boolean verificaMeno(LinkedList<Punto> lista, int value) {
         int sub = 0;
@@ -143,8 +151,8 @@ public final class Griglia extends Problema<Punto, Integer> {
             return -1*(sub) == value;
         else
             return sub == value;
-
     }
+
     //Verifica del vincolo di moltiplicazione sul gruppo
     private boolean verificaMoltiplicazione(LinkedList<Punto> lista, int value) {
         int prod = 1;
@@ -153,6 +161,7 @@ public final class Griglia extends Problema<Punto, Integer> {
         }
         return prod == value;
     }
+
     //Verifica del vincolo di divisione sul gruppo
     private boolean verificaDivisione(LinkedList<Punto> lista, int value) {
         int div = 0;
@@ -170,13 +179,12 @@ public final class Griglia extends Problema<Punto, Integer> {
         }
         return div == value;
     }
+
     //Verifica del vincolo se è pieno sul gruppo
     private boolean gruppoPieno(LinkedList<Punto> lista) {
-        for(Punto p: lista){
-            if(griglia[p.getRiga()][p.getColonna()] == 0){
+        for(Punto p: lista)
+            if(griglia[p.getRiga()][p.getColonna()] == 0)
                 return false;
-            }
-        }
         return true;
     }
 
@@ -188,7 +196,6 @@ public final class Griglia extends Problema<Punto, Integer> {
     @Override
     protected void deassegna(Integer scelta, Punto puntoDiScelta) {
         griglia[puntoDiScelta.getRiga()][puntoDiScelta.getColonna()] = 0;
-
     }
 
     @Override
@@ -224,6 +231,7 @@ public final class Griglia extends Problema<Punto, Integer> {
         griglia = g;
     }
     public LinkedList<Gruppo> getGruppi() {
+        //copia profando della lista di gruppo per rispettare l'incapsulamento dello stato
         LinkedList<Gruppo> ret = new LinkedList<>();
         for(Gruppo g: gruppi){
             LinkedList<Punto> punti = new LinkedList<>();

@@ -100,7 +100,6 @@ public class DocumentParser {
 			throw new Exception();
 		if(!token.equals("<riga>"))
 			throw new Exception();
-
 		token = nextToken();
 		par.append(" ").append(token);
 		token = nextToken();

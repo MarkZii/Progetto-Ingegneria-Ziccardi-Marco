@@ -2,14 +2,16 @@ package builder;
 
 import backtraking.Gruppo;
 import backtraking.Punto;
-
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+
+//builder concretro per andare a creare gli oggetti di una griglia
 public class GrigliaBuilder implements GrigliaBuilderIF {
     private int size;
     private LinkedList<Gruppo> gruppi;
     public GrigliaBuilder(){}
+
     @Override
     public void createGriglia(String dimensione) {
         gruppi = new LinkedList<>();

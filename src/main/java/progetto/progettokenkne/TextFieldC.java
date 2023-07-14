@@ -1,9 +1,8 @@
 package progetto.progettokenkne;
 
-import javafx.application.Application;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
+//Classe che estende TextField tale che in una TextField è possibile salvare la posizione (riga colonna) e leggerla. Utile per funzioni varie
 public class TextFieldC extends TextField {
     private int riga,colonna;
 

@@ -3,7 +3,6 @@ package progetto.progettokenkne;
 import backtraking.Griglia;
 import backtraking.Gruppo;
 import backtraking.Punto;
-import director.TextParseException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,12 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
+//classe che gestisce il foglio "kenken-view.fxml"
 public class GrigliaController {
     public int size=0;
     @FXML private TextField dimensione, sceltaVal, caricaFile;
@@ -48,6 +46,7 @@ public class GrigliaController {
         istruzione.setVisible(false);
     }
 
+    //gestisce l'inserimento della dimensione della griglia
     @FXML
     protected void grigliaButtonClick() {
         if(dimensione.getText().equals("")){
@@ -71,6 +70,8 @@ public class GrigliaController {
             }
         }
     }
+
+
     private void creazioneGrid(){
         //gestore dei click dei pulsanti
         EventHandler<ActionEvent> buttonClickHandler = event -> {
@@ -122,12 +123,12 @@ public class GrigliaController {
             erroreSalva.setText("ERRORE: solo numeri. Reinserire");
         }
     }
-    //operazioni per eliminare l'ultima selezione
+
+    //operazioni per la gestione della eliminazione l'ultima selezione delgruppo
     @FXML
     private void cancellaOperazione(){
-        for(Buttonc b: button) {
+        for(Buttonc b: button)
             b.setDisable(false);
-        }
         gruppo = new Gruppo();
         punti = new LinkedList<>();
         button = new LinkedList<>();
@@ -136,12 +137,13 @@ public class GrigliaController {
         sceltaVal.setText("");
         sceltaOp.setText("Scegli operazione");
     }
+
+    //operazione per la gestione della eliminazione di tutti i gruppi selezionati
     @FXML
     private void resettaTutto(){
         confermaStruttura.setVisible(false);
-        for(Buttonc b: tuttiButton) {
+        for(Buttonc b: tuttiButton)
             b.setDisable(false);
-        }
         tuttiButton = new LinkedList<>();
         gruppo = new Gruppo();
         punti = new LinkedList<>();
@@ -152,12 +154,13 @@ public class GrigliaController {
         sceltaOp.setText("Scegli operazione");
     }
 
+    //operazioni per caricare la griglia configurata
     @FXML
     private void confermaStruttura() {
         try {
             verifica.setDisable(false);
             caricaFile.setVisible(true);
-            if (daFile) {
+            if (daFile) { //l'if serve a capire se la griglia da capire bisogna prelevarla da file o da selezione
                 caricaDaFile();
             } else {
                 scecificheGruppo.setVisible(false);
@@ -181,13 +184,13 @@ public class GrigliaController {
         esporta.setDisable(false);
         griglia.getChildren().clear();
         coloriCasuali();
-        //aggiunta delle textfield nella griglia
         int i = 0;
         boolean ok = true;
         soluzione = new int[size][size];
         for (Gruppo g : gruppi) {
             String colore = colori.get(i);
             for (Punto p : g.getPunti()) {
+                //aggiunta delle textfield nella griglia
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
                 text.setStyle("-fx-border-color: #" + colore + "; -fx-background-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px");
                 Label label = new Label();
@@ -213,6 +216,8 @@ public class GrigliaController {
                 root.getChildren().addAll(label, text);
                 griglia.add(root, p.getColonna(), p.getRiga());
                 ok = false;
+
+                //listener per stare in ascolto di un inserimeno di valori nelle text field
                 text.textProperty().addListener((observable, oldValue, newValue) -> {
                     try {
                         int val = Integer.parseInt(newValue);
@@ -228,6 +233,7 @@ public class GrigliaController {
             i++;
         }
     }
+
     private void caricaDaFile() throws Exception { ///MEMENTOOOO
             String nomeFile = caricaFile.getText();
             sc = new Griglia(1, nomeFile);
@@ -269,10 +275,11 @@ public class GrigliaController {
         return false;
     }
 
+    //Prelevo n colori con n pari al numero dei gruppi per poter colorare i diversi gruppi della griglia
     public void coloriCasuali() {
         Random random = new Random();
         int r, g, b;
-        for (int i = 0; i < gruppi.size(); i++){//genera size() coloi casuali e poi verirfica che non sia scuro
+        for (int i = 0; i < gruppi.size(); i++){//genera size() colori casuali e poi verirfica che non sia scuro e gia presente
             double bianco;
             String esadecimale = null;
             do {
@@ -293,13 +300,15 @@ public class GrigliaController {
             sc.setGriglia(new int[size][size]);
             if (!caricaFile.getText().equals("") && !(Integer.parseInt(caricaFile.getText())<=0)) {
                 sol = Integer.parseInt(caricaFile.getText());
-                sc.setNum_max_soluzioni(sol);
-                sc.risolvi();
-                soluzioni = sc.risultati();
+                sc.setNum_max_soluzioni(sol); //setto il numero di soluzioni da trovare
+                sc.risolvi(); //invoco la risoluzione
+                soluzioni = sc.risultati(); //prelevo tutte le soluzioni
                 Integer[][] primo = soluzioni.get(numSol);
-                for (TextFieldC t : textFields) {
+
+                //le mostro a video e se sono più di uno attivo i pulsanti
+                for (TextFieldC t : textFields)
                     t.setText(String.valueOf(primo[t.getRiga()][t.getColonna()]));
-                }
+
                 istruzione.setTextFill(Color.GREEN);
                 if (soluzioni.size() == 1) {
                     istruzione.setText("Unica soluzione");
@@ -326,7 +335,8 @@ public class GrigliaController {
             istruzione.setTextFill(Color.RED);
         }
     }
-    @FXML public void successivaSoluzione(){
+    @FXML
+    public void successivaSoluzione(){
         precedente.setDisable(false);
         Integer[][] primo = soluzioni.get(numSol);
         for(TextFieldC t: textFields){
@@ -367,6 +377,7 @@ public class GrigliaController {
         stage.setScene(scene);
         stage.showAndWait();
     }
+
     public void verificaSoluzione(){
         sc.setGriglia(new int[size][size]);
         boolean alcuniNull = false;
@@ -392,6 +403,7 @@ public class GrigliaController {
         else
             istruzione.setText("Valori corretti");
     }
+
     public void caricaGriglia() {
         scecificheGruppo.setVisible(false);
         istruzione.setVisible(true);
