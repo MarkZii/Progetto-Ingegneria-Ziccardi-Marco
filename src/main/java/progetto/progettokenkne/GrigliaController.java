@@ -198,7 +198,6 @@ public class GrigliaController {
             for (Punto p : g.getPunti()) {
                 //aggiunta delle textfield nella griglia
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
-                System.out.println(colore+" "+ g.getOperazione()+" "+g.getValue());
                 text.setStyle("-fx-border-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px; -fx-border-width: 3px;" );
                 Label label = new Label();
                 VBox root = new VBox();
@@ -293,9 +292,9 @@ public class GrigliaController {
                 r = random.nextInt(256);
                 g = random.nextInt(256);
                 b = random.nextInt(256);
-                //bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
+                bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
                 esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
-            } while (/*!(bianco >= 20 && bianco <= 30) && */colori.contains(esadecimale));
+            } while (!(bianco >= 30) /*&& bianco <= 30)*/ && colori.contains(esadecimale));
 
             colori.add(esadecimale);
         }
@@ -318,7 +317,7 @@ public class GrigliaController {
 
                 istruzione.setTextFill(Color.GREEN);
                 if (soluzioni.size() == 1) {
-                    istruzione.setText("Unica soluzione");
+                    istruzione.setText("Il puzzle ha una UNICA soluzione");
                 } else {
                     if(sol > soluzioni.size())
                         istruzione.setText("Non ci sono "+sol+" soluzioni. Soluzione numero: " + (numSol+1));
@@ -338,6 +337,7 @@ public class GrigliaController {
             istruzione.setText("ERRORE: inserire solo numeri");
             istruzione.setTextFill(Color.RED);
         }catch (Exception e){
+            e.printStackTrace();
             istruzione.setText("Non ci sono soluzioni");
             istruzione.setTextFill(Color.RED);
         }
@@ -430,7 +430,6 @@ public class GrigliaController {
 
     @FXML
     public void ricominciaDaCapo(){
-        System.out.println("ciadoajsoff");
         sc = null;
         gruppi = new LinkedList<>();;
         punti = new LinkedList<>();;
@@ -452,5 +451,6 @@ public class GrigliaController {
         istruzione.setTextFill(Color.BLACK);
         celleScelte.setText("");
         sceltaVal.setText("");
+        numSol=0;
     }
 }

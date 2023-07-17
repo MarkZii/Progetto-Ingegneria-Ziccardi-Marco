@@ -8,8 +8,8 @@ import java.util.LinkedList;
 public final class Griglia extends Problema<Punto, Integer> {
     private int[][] griglia;
     private final int size;
-    private final Punto puntoS;
-    private final Punto puntoF;
+    private Punto puntoS;
+    private Punto puntoF;
     private boolean esiste = false;
     private final LinkedList<Gruppo> gruppi = new LinkedList<>();
     private LinkedList<Integer[][]> soluzioni = new LinkedList<>();
@@ -227,6 +227,10 @@ public final class Griglia extends Problema<Punto, Integer> {
 
     public boolean esisteSoluzione(){
         risolvi();
+        puntoS = new Punto(0,0);
+        puntoF = new Punto((size-1),(size-1));
+        griglia = new int[size][size];
+        soluzioni = new LinkedList<>();
         return esiste;
     }
     //metodi di getter / setter
