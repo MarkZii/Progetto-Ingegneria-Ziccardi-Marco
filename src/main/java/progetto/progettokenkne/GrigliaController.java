@@ -22,7 +22,7 @@ public class GrigliaController {
     public int size=0;
     @FXML private TextField dimensione, sceltaVal, caricaFile;
     @FXML private HBox inizializzazione, boxGriglia;
-    @FXML private Button confermaStruttura, esporta, bottomDaFile, precedente, successiva, mostra, verifica;
+    @FXML private Button confStruttura, esporta, bottomDaFile, precedente, successiva, mostra, verifica;
     @FXML private GridPane griglia;
     @FXML private Label istruzione, celleScelte, textError, erroreSalva;
     @FXML private VBox scecificheGruppo;
@@ -117,7 +117,7 @@ public class GrigliaController {
                 celleScelte.setText("");
                 sceltaVal.setText("");
                 sceltaOp.setText("Scegli operazione");
-                if(tuttiButton.size() == (size*size)) confermaStruttura.setVisible(true);
+                if(tuttiButton.size() == (size*size)) confStruttura.setVisible(true);
             }
         }catch (NumberFormatException e){
             erroreSalva.setText("ERRORE: solo numeri. Reinserire");
@@ -141,7 +141,7 @@ public class GrigliaController {
     //operazione per la gestione della eliminazione di tutti i gruppi selezionati
     @FXML
     private void resettaTutto(){
-        confermaStruttura.setVisible(false);
+        confStruttura.setVisible(false);
         for(Buttonc b: tuttiButton)
             b.setDisable(false);
         tuttiButton = new LinkedList<>();
@@ -158,24 +158,30 @@ public class GrigliaController {
     @FXML
     private void confermaStruttura() {
         try {
-            verifica.setDisable(false);
+            scecificheGruppo.setVisible(false);
             caricaFile.setVisible(true);
             if (daFile) { //l'if serve a capire se la griglia da capire bisogna prelevarla da file o da selezione
                 caricaDaFile();
             } else {
-                scecificheGruppo.setVisible(false);
                 sc = new Griglia(1, size, gruppi);
                 disegnaStruttura();
             }
             boxGriglia.setVisible(true);
-            mostra.setDisable(false);
-            istruzione.setText("La griglia è pronta, gioca");
-            confermaStruttura.setVisible(false);
-            esporta.setDisable(false);
+            esporta.setDisable(true);
+            confStruttura.setVisible(false);
             bottomDaFile.setDisable(true);
             caricaFile.setText("");
             caricaFile.setPromptText("Inserire numero di soluzioni che si vuole avere");
+            if(!sc.esisteSoluzione()){
+                istruzione.setText("ATTENZIONE: la configurazione inserita non ha soluzione");
+            }else{
+                istruzione.setText("La griglia ha soluzioni, gioca");
+                mostra.setDisable(false);
+                esporta.setDisable(false);
+                verifica.setDisable(false);
+            }
         }catch (Exception e){
+            e.printStackTrace();
             istruzione.setText("ERRORE: file non trovato o formato errato o errore nei TAG");
         }
     }
@@ -192,7 +198,8 @@ public class GrigliaController {
             for (Punto p : g.getPunti()) {
                 //aggiunta delle textfield nella griglia
                 TextFieldC text = new TextFieldC(p.getColonna(), p.getRiga());
-                text.setStyle("-fx-border-color: #" + colore + "; -fx-background-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px");
+                System.out.println(colore+" "+ g.getOperazione()+" "+g.getValue());
+                text.setStyle("-fx-border-color: #" + colore + ";-fx-pref-width: 35px;-fx-pref-height: 30px; -fx-border-width: 3px;" );
                 Label label = new Label();
                 VBox root = new VBox();
                 textFields.add(text);
@@ -234,7 +241,7 @@ public class GrigliaController {
         }
     }
 
-    private void caricaDaFile() throws Exception { ///MEMENTOOOO
+    private void caricaDaFile() throws Exception {
             String nomeFile = caricaFile.getText();
             sc = new Griglia(1, nomeFile);
             size = sc.getSize();
@@ -286,9 +293,9 @@ public class GrigliaController {
                 r = random.nextInt(256);
                 g = random.nextInt(256);
                 b = random.nextInt(256);
-                bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
+                //bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
                 esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
-            } while (!(bianco >= 35 && bianco <=65) && colori.contains(esadecimale));
+            } while (/*!(bianco >= 20 && bianco <= 30) && */colori.contains(esadecimale));
 
             colori.add(esadecimale);
         }
@@ -381,13 +388,15 @@ public class GrigliaController {
     public void verificaSoluzione(){
         sc.setGriglia(new int[size][size]);
         boolean alcuniNull = false;
+        boolean tuttiZero = true;
         for(int i=0; i<size; i++) {
             for (int j = 0; j < size; j++){
                 if(soluzione[i][j] != 0){
+                    tuttiZero = false;
                     Punto p = new Punto(i,j);
                     if(!sc.assegnabile(soluzione[i][j], p)) {
                         istruzione.setTextFill(Color.RED);
-                        istruzione.setText("Non tutti i valori inseriti sono corretti. Reinserire");
+                        istruzione.setText("Non tutti i valori inseriti rispettano i vincoli. Reinserire");
                         return;
                     }else{
                         sc.assegna(soluzione[i][j], p);
@@ -396,6 +405,10 @@ public class GrigliaController {
                     alcuniNull = true;
                 }
             }
+        }
+        if(tuttiZero) {
+            istruzione.setText("Fornire almeno un valore numerico");
+            return;
         }
         istruzione.setTextFill(Color.GREEN);
         if(!alcuniNull)
@@ -410,7 +423,8 @@ public class GrigliaController {
         istruzione.setText("");
         inizializzazione.setVisible(false);
         caricaFile.setVisible(true);
-        confermaStruttura.setVisible(true);
+        caricaFile.setPromptText("Inserisci percorso assoluto del file");
+        confStruttura.setVisible(true);
         daFile = true;
     }
 

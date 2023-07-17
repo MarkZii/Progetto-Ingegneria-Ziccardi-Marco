@@ -10,6 +10,7 @@ public final class Griglia extends Problema<Punto, Integer> {
     private final int size;
     private final Punto puntoS;
     private final Punto puntoF;
+    private boolean esiste = false;
     private final LinkedList<Gruppo> gruppi = new LinkedList<>();
     private LinkedList<Integer[][]> soluzioni = new LinkedList<>();
 
@@ -216,6 +217,7 @@ public final class Griglia extends Problema<Punto, Integer> {
 
     @Override
     protected void scriviSoluzione(int nr_sol) {
+        esiste = true;
         Integer[][] copia = new Integer[size][size];
         for(int i=0; i<size; i++)
             for (int j = 0; j < size; j++)
@@ -223,6 +225,10 @@ public final class Griglia extends Problema<Punto, Integer> {
         soluzioni.add(copia);
     }
 
+    public boolean esisteSoluzione(){
+        risolvi();
+        return esiste;
+    }
     //metodi di getter / setter
     public int getSize() {
         return size;

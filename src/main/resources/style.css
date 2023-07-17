@@ -1,4 +1,7 @@
 #griglia {
-    -fx-hgap: 1px;
-    -fx-vgap: 1px;
+    -fx-hgap: 2px;
+    -fx-vgap: 2px;
 }
+/*.text-field {
+    -fx-border-width: 2px; /* Imposta uno spessore di 2px per il bordo
+}*/

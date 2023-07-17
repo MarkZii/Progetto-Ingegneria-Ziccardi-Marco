@@ -113,7 +113,7 @@
    </HBox>
    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
       <children>
-         <Button fx:id="confermaStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="40.0" prefWidth="162.0" text="CARICA STRUTTURA" visible="false" />
+         <Button fx:id="confStruttura" mnemonicParsing="false" onAction="#confermaStruttura" prefHeight="40.0" prefWidth="162.0" text="CARICA STRUTTURA" visible="false" />
          <Separator prefHeight="21.0" prefWidth="60.0" visible="false" />
       </children>
    </HBox>
