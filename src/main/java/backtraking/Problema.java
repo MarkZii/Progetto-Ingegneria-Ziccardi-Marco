@@ -80,5 +80,6 @@ public abstract class Problema<P, S> {
 					fine = true;
 			}
 		} while (!fine);
+		nr_soluzione=0;
 	}
 }

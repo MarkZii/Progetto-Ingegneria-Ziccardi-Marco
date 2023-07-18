@@ -15,6 +15,7 @@ public final class Griglia extends Problema<Punto, Integer> implements Element {
     private LinkedList<Integer[][]> soluzioni = new LinkedList<>();
 
     //Costruttore che permette di costruire da input la nuova matrice
+
     public Griglia(int numSol, int size, LinkedList<Gruppo> gruppi) {
         super(numSol);
         this.size = size;

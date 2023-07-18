@@ -468,5 +468,7 @@ public class GrigliaController {
         sceltaVal.setText("");
         numSol=0;
         confStruttura.setVisible(false);
+        dimensione.setPromptText("valori compresi tra 3 e 9");
+        caricaFile.setPromptText("Inserisci percorso assoluto del file");
     }
 }
