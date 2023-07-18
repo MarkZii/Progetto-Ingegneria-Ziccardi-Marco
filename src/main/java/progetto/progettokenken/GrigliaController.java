@@ -299,9 +299,9 @@ public class GrigliaController {
                 r = random.nextInt(256);
                 g = random.nextInt(256);
                 b = random.nextInt(256);
-                bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari e troppo scuri
+                bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari
                 esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
-            } while (!(bianco >= 30) /*&& bianco <= 30)*/ && colori.contains(esadecimale));
+            } while (!(bianco >= 40) /*&& bianco <= 30)*/ && colori.contains(esadecimale));
 
             colori.add(esadecimale);
         }
