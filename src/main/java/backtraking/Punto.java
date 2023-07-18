@@ -1,8 +1,8 @@
 package backtraking;
 
-import visitor.DocumentVisitor;
+import visitor.Visitor;
 
-public final class Punto {
+public final class Punto implements Element {
     private int riga;
     private int colonna;
 
@@ -50,7 +50,7 @@ public final class Punto {
         colonna--;
     }
 
-    public void accept(DocumentVisitor visitor){
+    public void accept(Visitor visitor){
         visitor.visit(this);
     }
 

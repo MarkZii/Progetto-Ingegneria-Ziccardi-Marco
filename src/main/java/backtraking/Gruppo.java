@@ -1,10 +1,10 @@
 package backtraking;
 
-import visitor.TextVisitor;
+import visitor.Visitor;
 import java.util.LinkedList;
 
 //La seguente classe mi serve per mantenere le informazioni di un isiemo "gruppo" della griglia
-public final class Gruppo {
+public final class Gruppo implements Element {
     private LinkedList<Punto> punti;
     private int value;
     private String operazione;
@@ -48,7 +48,7 @@ public final class Gruppo {
 
     public String getOperazione() { return new String(operazione); }
 
-    public void accept(TextVisitor visitor){
+    public void accept(Visitor visitor){
         visitor.visit(this);
     }
 

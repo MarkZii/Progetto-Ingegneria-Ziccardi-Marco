@@ -2,10 +2,10 @@ package backtraking;
 
 import builder.GrigliaBuilder;
 import director.DocumentParser;
-import visitor.DocumentVisitor;
+import visitor.Visitor;
 import java.util.LinkedList;
 
-public final class Griglia extends Problema<Punto, Integer> {
+public final class Griglia extends Problema<Punto, Integer> implements Element {
     private int[][] griglia;
     private final int size;
     private Punto puntoS;
@@ -258,7 +258,7 @@ public final class Griglia extends Problema<Punto, Integer> {
     }
 
     //metodo per accettare la visita
-    public void accept(DocumentVisitor visitor){
+    public void accept(Visitor visitor){
         visitor.visit(this);
     }
 }

@@ -6,13 +6,12 @@ import backtraking.Gruppo;
 import backtraking.Punto;
 
 import java.io.PrintWriter;
-import java.util.LinkedList;
 
-public class TextVisitor implements DocumentVisitor{
+public class XmlExportVisitor implements Visitor {
     private PrintWriter pw;
     //private int size;
     //private LinkedList<Gruppo> gruppi = new LinkedList<>();
-    public TextVisitor(PrintWriter ps) {
+    public XmlExportVisitor(PrintWriter ps) {
         this.pw=ps;
     }
     @Override

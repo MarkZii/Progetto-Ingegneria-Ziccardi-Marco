@@ -1,4 +1,4 @@
-package progetto.progettokenkne;
+package progetto.progettokenken;
 
 import backtraking.Griglia;
 import backtraking.Gruppo;
@@ -12,8 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import visitor.Visitor;
+import visitor.XmlExportVisitor;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -374,15 +381,23 @@ public class GrigliaController {
         numSol--;
     }
 
-    public void esportaGriglia() throws IOException {//MEMENTO
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("esporta-griglia.fxml"));
-        Parent root = loader.load();
-        EsportaController ec = loader.getController();
-        ec.inizializzazione(sc);
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.showAndWait();
+    public void esportaGriglia() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File di testo", "*.txt");
+        fileChooser.getExtensionFilters().add(filter);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        javafx.stage.Stage fakeStage = new javafx.stage.Stage();
+        File selectedFile = fileChooser.showSaveDialog(fakeStage);
+
+        String perNomeF = selectedFile.getAbsolutePath();
+        if (!perNomeF.equals("")) {
+            PrintWriter pw = null;
+            pw = new PrintWriter(perNomeF);
+            Visitor visitor = new XmlExportVisitor(pw);
+            sc.accept(visitor);
+            pw.close();
+        }
+
     }
 
     public void verificaSoluzione(){
@@ -452,5 +467,6 @@ public class GrigliaController {
         celleScelte.setText("");
         sceltaVal.setText("");
         numSol=0;
+        confStruttura.setVisible(false);
     }
 }

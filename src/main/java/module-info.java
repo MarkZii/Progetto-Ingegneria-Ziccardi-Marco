@@ -4,6 +4,6 @@ module progetto.progettokenkne {
 
     requires com.dlsc.formsfx;
 
-    opens progetto.progettokenkne to javafx.fxml;
-    exports progetto.progettokenkne;
+    opens progetto.progettokenken to javafx.fxml;
+    exports progetto.progettokenken;
 }

@@ -1,4 +1,4 @@
-package progetto.progettokenkne;
+package progetto.progettokenken;
 
 import javafx.scene.control.Button;
 

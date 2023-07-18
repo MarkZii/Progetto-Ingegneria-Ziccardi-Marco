@@ -46,6 +46,6 @@ public class GrigliaBuilder implements GrigliaBuilderIF {
     }
 
     public LinkedList getGruppi(){
-        return new LinkedList<Gruppo>(gruppi);
+        return new LinkedList<>(gruppi);
     }
 }
