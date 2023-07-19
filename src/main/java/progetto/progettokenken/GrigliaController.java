@@ -48,7 +48,6 @@ public class GrigliaController {
     private int[][] soluzione;
     private LinkedList<Integer[][]> soluzioni;
     int numSol = 0;
-    String nomeFile;
 
     public void initialize() {
         istruzione.setVisible(false);
@@ -169,11 +168,10 @@ public class GrigliaController {
             scecificheGruppo.setVisible(false);
             caricaFile.setVisible(true);
             if (daFile) { //l'if serve a capire se la griglia da capire bisogna prelevarla da file o da selezione
-                sc = new Griglia(1, nomeFile);
-                size = sc.getSize();
-                gruppi = new LinkedList<>(sc.getGruppi());
+                caricaDaFile();
             } else {
                 sc = new Griglia(1, size, gruppi);
+                disegnaStruttura();
             }
             boxGriglia.setVisible(true);
             esporta.setDisable(true);
@@ -254,8 +252,11 @@ public class GrigliaController {
     }
 
     private void caricaDaFile() throws Exception {
-            //nomeFile = caricaFile.getText();
-
+        String nomeFile = caricaFile.getText();
+        sc = new Griglia(1, nomeFile);
+        size = sc.getSize();
+        gruppi = new LinkedList<>(sc.getGruppi());
+        disegnaStruttura();
     }
 
     //classi per prelevare il valore della operazione
@@ -437,15 +438,15 @@ public class GrigliaController {
 
     @FXML
     public void caricaGriglia(){
-        /*scecificheGruppo.setVisible(false);
+        scecificheGruppo.setVisible(false);
         istruzione.setVisible(true);
         istruzione.setText("");
         inizializzazione.setVisible(false);
         caricaFile.setVisible(true);
         caricaFile.setPromptText("Inserisci percorso assoluto del file");
         confStruttura.setVisible(true);
-        daFile = true;*/
-        FileChooser fileChooser = new FileChooser();
+        daFile = true;
+        /*FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File di testo", "*.txt");
         fileChooser.getExtensionFilters().add(filter);
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -458,7 +459,7 @@ public class GrigliaController {
         istruzione.setText("");
         daFile = true;
         //confStruttura.setVisible(true);
-        confermaStruttura();
+        */
     }
 
     @FXML
@@ -487,6 +488,7 @@ public class GrigliaController {
         numSol=0;
         confStruttura.setVisible(false);
         dimensione.setText("");
+        caricaFile.setText("");
         dimensione.setPromptText("valori compresi tra 3 e 9");
     }
 }
