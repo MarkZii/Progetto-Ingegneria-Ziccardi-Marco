@@ -40,7 +40,7 @@ public class GrigliaController {
     private LinkedList<Punto> punti = new LinkedList<>();
     private LinkedList<Buttonc> button = new LinkedList<>();
     private LinkedList<Buttonc> tuttiButton = new LinkedList<>();
-    private boolean daFile = false;
+    private boolean daFile = false, esiste = false;
     private LinkedList<TextFieldC> textFields = new LinkedList<>();
     private LinkedList<String> colori = new LinkedList<>();
     private Griglia sc;
@@ -48,6 +48,7 @@ public class GrigliaController {
     private int[][] soluzione;
     private LinkedList<Integer[][]> soluzioni;
     int numSol = 0;
+    String nomeFile;
 
     public void initialize() {
         istruzione.setVisible(false);
@@ -168,10 +169,11 @@ public class GrigliaController {
             scecificheGruppo.setVisible(false);
             caricaFile.setVisible(true);
             if (daFile) { //l'if serve a capire se la griglia da capire bisogna prelevarla da file o da selezione
-                caricaDaFile();
+                sc = new Griglia(1, nomeFile);
+                size = sc.getSize();
+                gruppi = new LinkedList<>(sc.getGruppi());
             } else {
                 sc = new Griglia(1, size, gruppi);
-                disegnaStruttura();
             }
             boxGriglia.setVisible(true);
             esporta.setDisable(true);
@@ -179,14 +181,16 @@ public class GrigliaController {
             bottomDaFile.setDisable(true);
             caricaFile.setText("");
             caricaFile.setPromptText("Inserire numero di soluzioni che si vuole avere");
-            if(!sc.esisteSoluzione()){
-                istruzione.setText("ATTENZIONE: la configurazione inserita non ha soluzione");
+            esiste = sc.esisteSoluzione();
+            if(!esiste){
+                istruzione.setText("ATTENZIONE: la configurazione non ha soluzione. Ricomincia.");
             }else{
                 istruzione.setText("La griglia ha soluzioni, gioca");
                 mostra.setDisable(false);
                 esporta.setDisable(false);
                 verifica.setDisable(false);
             }
+            disegnaStruttura();
         }catch (Exception e){
             e.printStackTrace();
             istruzione.setText("ERRORE: file non trovato o formato errato o errore nei TAG");
@@ -229,18 +233,20 @@ public class GrigliaController {
                 root.getChildren().addAll(label, text);
                 griglia.add(root, p.getColonna(), p.getRiga());
                 ok = false;
-
                 //listener per stare in ascolto di un inserimeno di valori nelle text field
-                text.textProperty().addListener((observable, oldValue, newValue) -> {
-                    try {
-                        int val = Integer.parseInt(newValue);
-                        if(val <= 0 || val > size) throw new Exception();
-                        soluzione[text.getRiga()][text.getColonna()] = val;
-                    }catch (Exception e){
-                        istruzione.setText("ERRORE, solo numeri o nell'intervallo <1,"+size+">");
-                        istruzione.setTextFill(Color.RED);
-                    }
-                });
+                if(esiste){
+                    text.textProperty().addListener((observable, oldValue, newValue) -> {
+                        try {
+                            int val = Integer.parseInt(newValue);
+                            if(val <= 0 || val > size) throw new Exception();
+                            soluzione[text.getRiga()][text.getColonna()] = val;
+                        }catch (Exception e){
+                            istruzione.setText("ERRORE, solo numeri o nell'intervallo <1,"+size+">");
+                            istruzione.setTextFill(Color.RED);
+                        }
+                    });
+                }
+
             }
             ok = true;
             i++;
@@ -248,11 +254,8 @@ public class GrigliaController {
     }
 
     private void caricaDaFile() throws Exception {
-            String nomeFile = caricaFile.getText();
-            sc = new Griglia(1, nomeFile);
-            size = sc.getSize();
-            gruppi = new LinkedList<>(sc.getGruppi());
-            disegnaStruttura();
+            //nomeFile = caricaFile.getText();
+
     }
 
     //classi per prelevare il valore della operazione
@@ -301,7 +304,7 @@ public class GrigliaController {
                 b = random.nextInt(256);
                 bianco = 100-(((double) (765 - (r+g+b)) / 765) * 100);  //mi permette di determinare la percentuale di bianco nel coloro e quindi evitare quelli troppo chiari
                 esadecimale = String.format("%02X%02X%02X", r, g, b); //conversione in esadecimale
-            } while (!(bianco >= 40) /*&& bianco <= 30)*/ && colori.contains(esadecimale));
+            } while (!(bianco >= 50) /*&& bianco <= 30)*/ && colori.contains(esadecimale));
 
             colori.add(esadecimale);
         }
@@ -381,6 +384,7 @@ public class GrigliaController {
         numSol--;
     }
 
+    @FXML
     public void esportaGriglia() throws IOException {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File di testo", "*.txt");
@@ -391,15 +395,14 @@ public class GrigliaController {
 
         String perNomeF = selectedFile.getAbsolutePath();
         if (!perNomeF.equals("")) {
-            PrintWriter pw = null;
-            pw = new PrintWriter(perNomeF);
+            PrintWriter pw = new PrintWriter(perNomeF);
             Visitor visitor = new XmlExportVisitor(pw);
             sc.accept(visitor);
             pw.close();
         }
-
     }
 
+    @FXML
     public void verificaSoluzione(){
         sc.setGriglia(new int[size][size]);
         boolean alcuniNull = false;
@@ -432,15 +435,30 @@ public class GrigliaController {
             istruzione.setText("Valori corretti");
     }
 
-    public void caricaGriglia() {
-        scecificheGruppo.setVisible(false);
+    @FXML
+    public void caricaGriglia(){
+        /*scecificheGruppo.setVisible(false);
         istruzione.setVisible(true);
         istruzione.setText("");
         inizializzazione.setVisible(false);
         caricaFile.setVisible(true);
         caricaFile.setPromptText("Inserisci percorso assoluto del file");
         confStruttura.setVisible(true);
+        daFile = true;*/
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File di testo", "*.txt");
+        fileChooser.getExtensionFilters().add(filter);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        javafx.stage.Stage fakeStage = new javafx.stage.Stage();
+        File selectedFile = fileChooser.showOpenDialog(fakeStage);
+        System.out.println("ci mette assai");
+        inizializzazione.setVisible(false);
+        nomeFile = selectedFile.getAbsolutePath();
+        istruzione.setVisible(true);
+        istruzione.setText("");
         daFile = true;
+        //confStruttura.setVisible(true);
+        confermaStruttura();
     }
 
     @FXML
@@ -468,7 +486,7 @@ public class GrigliaController {
         sceltaVal.setText("");
         numSol=0;
         confStruttura.setVisible(false);
+        dimensione.setText("");
         dimensione.setPromptText("valori compresi tra 3 e 9");
-        caricaFile.setPromptText("Inserisci percorso assoluto del file");
     }
 }
