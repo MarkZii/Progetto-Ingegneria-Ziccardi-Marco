@@ -69,6 +69,7 @@ public class GrigliaController {
                     scecificheGruppo.setVisible(true);
                     boxGriglia.setVisible(true);
                     istruzione.setVisible(true);
+                    griglia.setVisible(true);
                     istruzione.setText("Specifica la configurazione di gioco");
                     creazioneGrid();
                 }
@@ -445,7 +446,10 @@ public class GrigliaController {
         caricaFile.setVisible(true);
         caricaFile.setPromptText("Inserisci percorso assoluto del file");
         confStruttura.setVisible(true);
+        griglia.setVisible(false);
         daFile = true;
+
+        //eliminato perchè rallenta l'esecuzione
         /*FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File di testo", "*.txt");
         fileChooser.getExtensionFilters().add(filter);
@@ -490,5 +494,6 @@ public class GrigliaController {
         dimensione.setText("");
         caricaFile.setText("");
         dimensione.setPromptText("valori compresi tra 3 e 9");
+        textError.setText("");
     }
 }

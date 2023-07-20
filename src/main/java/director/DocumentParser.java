@@ -97,7 +97,7 @@ public class DocumentParser {
 		StringBuilder par = new StringBuilder();
 		token = nextToken();
 		if (token == null)
-			throw new Exception();
+				throw new Exception();
 		if(!token.equals("<riga>"))
 			throw new Exception();
 		token = nextToken();
